@@ -18,11 +18,12 @@ function draw() {
 		case 0:
 			//title
 			background("white");
-			rect(400,300,200, 50,20);
 			ball.visible = false;
+			rect(400,300,200, 50,20);
+		
 			if(mouseX >= 400 && mouseX <= 600 && mouseY >= 300 && mouseY <= 350 && mouseIsPressed == true) {
 				stage = 1;
-				ball.visible = true;
+			
 			}
 			if (kb.pressing('a')) {
 				stage = 2;
@@ -31,14 +32,15 @@ function draw() {
 		case 1:
 			//another menu
 			background("grey");
+			ball.visible = true;
 			if (mouse.presses()) {
 				stage = 2;
-			ball.x = 100;
-			ball.y = 100;
+		
 			}
 			break;
 		case 2:
 			//end
+			ball.visible = false;
 			background("black");
 			if (mouse.presses()) {
 				stage = 0;
