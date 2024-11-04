@@ -14,8 +14,12 @@ function draw() {
 		case 0:
 			//title
 			background("white");
-			if (mouse.presses()) {
+			rect(400,300,200, 50,20);
+			if(mouseX >= 400 && mouseX <= 600 && mouseY >= 300 && mouseY <= 350 && mouseIsPressed == true) {
 				stage = 1;
+			}
+			if (kb.pressing('a')) {
+				stage = 2;
 			}
 			break;
 		case 1:
@@ -34,6 +38,6 @@ function draw() {
 			break;
 		}
 	
-		log.stage
+		console.log(mouseX,mouseY)
 	}
 	
