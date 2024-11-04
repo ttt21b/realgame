@@ -5,6 +5,10 @@ function setup() {
 	new Canvas(windowWidth, windowHeight);
 	displayMode('centered');
 
+	ball = new Sprite();
+	ball.color = 'white';
+	ball.diameter = 50;
+
 
 }
 
@@ -15,8 +19,10 @@ function draw() {
 			//title
 			background("white");
 			rect(400,300,200, 50,20);
+			ball.visible = false;
 			if(mouseX >= 400 && mouseX <= 600 && mouseY >= 300 && mouseY <= 350 && mouseIsPressed == true) {
 				stage = 1;
+				ball.visible = true;
 			}
 			if (kb.pressing('a')) {
 				stage = 2;
@@ -27,6 +33,8 @@ function draw() {
 			background("grey");
 			if (mouse.presses()) {
 				stage = 2;
+			ball.x = 100;
+			ball.y = 100;
 			}
 			break;
 		case 2:
