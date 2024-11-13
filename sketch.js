@@ -3,6 +3,7 @@ let togglemenubackground = true; // Variable to toggle background image
 let menubackground1, menubackground2;
 let animalImg;
 let animaldeadImg;
+let animalisdead = false; //  flag
 
 function preload() {
 	menubackground1 = loadImage("assets/background1.png");
@@ -14,13 +15,13 @@ function preload() {
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	ellipseMode(CENTER);
+	
 
 	// Create the animal sprite
 	animal = new Sprite();
 	animal.img = animalImg;
 	animal.position = createVector(500, 500);
 	animal.visible = false; // Initially hidden
-
 	animal.collider = 'k';
 	animal.vel = createVector(2, 2); // Set the initial velocity
 
@@ -28,6 +29,13 @@ function setup() {
 	animaldead.img = animaldeadImg;
 	animaldead.position = animal.position;
 	animaldead.visible = false;
+
+	animalbutton = new Sprite();
+	animalbutton.width = 100;
+	animalbutton.height = 100;
+	animalbutton.collider = 'static';
+	animalbutton.visible = false;
+	animalbutton.position = createVector(100,100);
 }
 
 function draw() {
@@ -62,10 +70,10 @@ function draw() {
 
 			// Draw a white circle at the mouse position
 			fill("white");
-			noStroke();
-			let circleRadius = 300; // Circle radius (diameter was 600)
+			strokeWeight(10);
+			let circleRadius = 200; // Circle radius (diameter was 600)
 			circle(mouseX, mouseY, circleRadius * 2); // Circle with a fixed diameter of 600
-
+			// ADD CROSSHAIRS PNG HERE
 
 
 
@@ -84,7 +92,17 @@ function draw() {
 			}
 
 
+			if (animalisdead == true) { 
+				animalbutton.visible = true;
+			}
+
+			// this is gonna be the button, maybe make it a sprite so its not funky
+
+
 			break;
+		case 3:
+			animalbutton.visible = false;
+		background("red");
 	}
 	console.log(animaldead.visible);
 }
@@ -104,19 +122,30 @@ function mouseReleased() {
 	else if (stage === 2) {
 		
 		
-		 let threshold = 200;
+		 let threshold1 = 200;
 		 let distToAnimal = dist(mouseX, mouseY, animal.position.x, animal.position.y);
-		 if (distToAnimal < threshold) {
+		 if (distToAnimal < threshold1) {
 			animal.visible = false;
 			animal.vel.x = 0, animal.vel.y = 0; // stops the animal from moving after you click it
 			animaldead.visible = true;
+			animalisdead = true; // flag for animal is dead
 		
 		
-			animaldead.position = animal.position.copy();
+			animaldead.position = animal.position.copy(); //dead animal has the same position as animal at all times
 			animaldead.vel = animal.vel.copy(); // stops the vel of the dead thing
 
 
 		}
 
+		 let threshold2 = 50;
+		 let distToButton = dist(mouseX,mouseY, animalbutton.position.x, animalbutton.position.y);
+		 if (distToButton < threshold2) {
+		 	stage = 3
+		 }
+
+
+	}
+	else if (stage === 3) {
+		
 	}
 }	
