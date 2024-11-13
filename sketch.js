@@ -1,53 +1,73 @@
-let ball;
+let ball, ballX, ballY;
 let stage = 0;
+let togglemenubackground = true; // Variable to toggle background image
+let menubackground1, menubackground2;
+
+function preload() {
+	menubackground1 = loadImage("background1.png");
+	menubackground2 = loadImage("background2.png");
+}
 
 function setup() {
-	new Canvas(windowWidth, windowHeight);
-	displayMode('centered');
+	createCanvas(windowWidth, windowHeight);
 
 	ball = new Sprite();
 	ball.color = 'white';
 	ball.diameter = 50;
+	ball.visible = false; // Initially hidden
 
-
+	// Set ball initial position
+	ballX = windowWidth / 2;
+	ballY = windowHeight / 2;
 }
 
 function draw() {
-
 	switch (stage) {
 		case 0:
-			//title
-			background("white");
-			ball.visible = false;
-			rect(400,300,200, 50,20);
-		
-			if(mouseX >= 400 && mouseX <= 600 && mouseY >= 300 && mouseY <= 350 && mouseIsPressed == true) {
-				stage = 1;
-			
+			// Title screen with alternating background
+			if (frameCount % 100 === 0) {
+				togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
 			}
-			if (kb.pressing('a')) {
-				stage = 2;
-			}
+			background(togglemenubackground ? menubackground1 : menubackground2);
+
+			fill("black");
+			rect(710, 700, 400, 200, 20);
+			ball.visible = false; // ball is hidden but still shows if you click through all the stages
 			break;
+
 		case 1:
-			//another menu
+			// Another menu
 			background("grey");
-			ball.visible = true;
-			if (mouse.presses()) {
-				stage = 2;
-		
-			}
+			fill(0, 0, 0, 0);
+			strokeWeight(1)
+			rect(200, 150, 350, 400);
+			
+
+			// Set ball's position
+			ball.x = ballX;
+			ball.y = ballY;
 			break;
+
 		case 2:
-			//end
-			ball.visible = false;
+			// End screen
 			background("black");
-			if (mouse.presses()) {
-				stage = 0;
-			}
-			break;
-		}
-	
-		console.log(mouseX,mouseY)
+			ball.visible = false; 
 	}
 	
+	console.log(mouseX, mouseY);
+}
+
+// Handle stage transitions on mouse release
+function mouseReleased() {
+	if (stage === 0 && mouseX >= 700 && mouseX <= 1100 && mouseY >= 700 && mouseY <= 900) {
+		// stage 1 transition with the start button
+		stage = 1;
+	} else if (stage === 1 && mouseX >= 200 && mouseX <= 550 && mouseY >= 150 && mouseY <= 550) {
+		 {
+			stage = 2;
+		}
+	} else if (stage === 2) {
+		// Reset to stage 0
+		stage = 0;
+	}
+}
