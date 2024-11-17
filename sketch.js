@@ -9,6 +9,7 @@ let animaldeadImg;
 let animalisdead = false; // Flag
 let clickTime = null; // To store when the animal is clicked
 
+
 function preload() {
     menubackground1 = loadImage("assets/background1.png");
     menubackground2 = loadImage("assets/background2.png");
@@ -32,6 +33,8 @@ function setup() {
     animaldead.img = animaldeadImg;
     animaldead.position = animal.position;
     animaldead.visible = false;
+    animaldead.collider = 's';
+    
 
     animalbutton = new Sprite();
     animalbutton.width = 100;
@@ -39,6 +42,28 @@ function setup() {
     animalbutton.collider = 'static';
     animalbutton.visible = false;
     animalbutton.position = createVector(100, 100);
+
+    animalgutstop = new Sprite();
+    animalgutstop.width = 700;
+    animalgutstop.height = 100;
+    animalgutstop.collider = 'd'
+    animalgutstop.visible = false;
+    animalgutstop.position = createVector(1000,500);
+
+    animalgutsbottom = new Sprite();
+    animalgutsbottom.width = 700;
+    animalgutsbottom.height = 100;
+    animalgutsbottom.collider = 'd';
+    animalgutsbottom.visible = false;
+    animalgutsbottom.position = createVector(1000,800);
+
+knife = new Sprite();
+    knife.width = 100;
+    knife.height = 100;
+    knife.collider = 'kinematic';
+    knife.visible = false;
+    knife.position = createVector(100, 500);
+    knife.drag = 10;
 }
 
 function draw() {
@@ -94,14 +119,24 @@ function draw() {
             }
             break;
 
-        case 3:
+        case 3:    
+
+            knife.visible = true;
             animalbutton.visible = false;
             animaldead.visible = false;
             background("blue");
+            animalgutstop.visible = true;
+            animalgutsbottom.visible = true;    
+
+            if (mouseIsPressed)  {
+                knife.moveTowards(mouseX, 500, 1);
+                
+            }
+            
             break;
     }
 
-    console.log(animaldead.visible);
+    console.log(mouseX,mouseY);
 }
 
 // Handle stage transitions on mouse release
@@ -138,4 +173,6 @@ function mouseReleased() {
             stage = 3; // Transition to stage 3
         }
     }
+ 
+    
 }
