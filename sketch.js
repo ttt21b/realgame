@@ -8,6 +8,7 @@ let animalImg;
 let animaldeadImg;
 let animalisdead = false; // Flag
 let clickTime = null; // To store when the animal is clicked
+let timeToSlice = null; 
 
 
 function preload() {
@@ -34,7 +35,7 @@ function setup() {
     animaldead.position = animal.position;
     animaldead.visible = false;
     animaldead.collider = 's';
-    
+
 
     animalbutton = new Sprite();
     animalbutton.width = 100;
@@ -48,22 +49,29 @@ function setup() {
     animalgutstop.height = 100;
     animalgutstop.collider = 'd'
     animalgutstop.visible = false;
-    animalgutstop.position = createVector(1000,500);
+    animalgutstop.position = createVector(1000, 500);
 
     animalgutsbottom = new Sprite();
     animalgutsbottom.width = 700;
     animalgutsbottom.height = 100;
     animalgutsbottom.collider = 'd';
     animalgutsbottom.visible = false;
-    animalgutsbottom.position = createVector(1000,800);
+    animalgutsbottom.position = createVector(1000, 800);
 
-knife = new Sprite();
+    knife = new Sprite();
     knife.width = 100;
     knife.height = 100;
-    knife.collider = 'kinematic';
+    knife.collider = 'd';
     knife.visible = false;
     knife.position = createVector(100, 500);
-    knife.drag = 10;
+    knife.drag = 100;
+
+    gutsbutton = new Sprite();
+    gutsbutton.width = 100;
+    gutsbutton.height = 100;
+    gutsbutton.collider = 'static';
+    gutsbutton.visible = false;
+    gutsbutton.position = createVector(100, 100);
 }
 
 function draw() {
@@ -119,26 +127,50 @@ function draw() {
             }
             break;
 
-        case 3:    
+            case 3:
+                knife.visible = true;
+                animalbutton.visible = false;
+                animaldead.visible = false;
+                background("blue");
+                animalgutstop.visible = true;
+        
+                // Check if knife reaches the x-coordinate
+                if (knife.x > 1000 && timeToSlice === null) {
+                    timeToSlice = millis(); // Record the time only once
+                }
+        
+                // Show gutsbutton 5 seconds after the knife reaches the point
+                if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
+                    gutsbutton.visible = true; // Show the button
+                }
+                break;
 
-            knife.visible = true;
-            animalbutton.visible = false;
-            animaldead.visible = false;
-            background("blue");
-            animalgutstop.visible = true;
-            animalgutsbottom.visible = true;    
-
-            if (mouseIsPressed)  {
-                knife.moveTowards(mouseX, 500, 1);
-                
-            }
+        case 4:
+        background("green");  
             
-            break;
     }
 
-    console.log(mouseX,mouseY);
+    console.log(gutsbutton.visible, mouseX,mouseY);
 }
 
+function mouseDragged() {
+    if (stage === 3) {
+        // Edge detection
+        if (knife.x - knife.width / 2 < 0) {
+            knife.x = knife.width / 2; // Left edge
+        }
+        if (knife.x + knife.width / 2 > windowWidth) {
+            knife.x = windowWidth - knife.width / 2; // Right edge
+        }
+
+
+
+
+        knife.moveTowards(mouseX, 500, .1);
+
+
+    }
+}
 // Handle stage transitions on mouse release
 function mouseReleased() {
     // Check if mouse clicked on the start button in stage 0
@@ -162,7 +194,7 @@ function mouseReleased() {
             animaldead.visible = true;
             animalisdead = true; // Flag the animal as dead
             animaldead.position = animal.position.copy();
-			animaldead.velocity = animal.velocity.copy();
+            animaldead.velocity = animal.velocity.copy();
             clickTime = millis(); // Record the time of the click
             console.log("Animal clicked at: " + clickTime + " milliseconds");
         }
@@ -173,6 +205,17 @@ function mouseReleased() {
             stage = 3; // Transition to stage 3
         }
     }
- 
-    
+    else if (stage === 3) {
+
+        knife.velocity.x = 0.1;
+       
+        let threshold3 = 50;
+     
+        let distToButton2 = dist(mouseX, mouseY, gutsbutton.position.x, gutsbutton.position.y);
+        if (distToButton2 < threshold3) {
+            stage = 4; // Transition to stage 3
+        }
+    }
+
+
 }
