@@ -9,12 +9,18 @@ let animaldeadImg;
 let animalisdead = false; // Flag
 let clickTime = null; // To store when the animal is clicked
 let timeToSlice = null;
-let deer1Img, deer2Img;
-let animalAniFrames = [];
+let deer1Img, deer2Img, deer3Img, deer4Img, deer5Img;
+let animalIdleFrames = [];
 let currentFrame = 0;
 let frameDelay = 25;
 let frameCounter = 0;
 let constpaper;
+let crosshairs;
+let deerActionFrames = [];
+let deerAniSet = 0;
+let gobutton1, gobutton2;
+let togglegobutton = true;
+
 
 
 
@@ -26,8 +32,15 @@ function preload() {
     animaldeadImg = loadImage("assets/redx.png");
     deer1Img = loadImage("assets/deer1.png");
     deer2Img = loadImage("assets/deer2.png");
-    animalAniFrames = [deer1Img, deer2Img];
+    deer3Img = loadImage("assets/deer3.png");
+    deer4Img = loadImage("assets/deer4.png");
+    deer5Img = loadImage("assets/deer5.png");
+    animalIdleFrames = [deer1Img, deer2Img];
+    deerActionFrames = [deer3Img, deer4Img, deer5Img];
     constpaper = loadImage("assets/constpaperbackground.jpg")
+    crosshairs = loadImage("assets/crosshairs.png")
+    go1 = loadImage("assets/gobutton1.png");
+    go2 = loadImage("assets/gobutton2.png");
 
 }
 
@@ -38,7 +51,7 @@ function setup() {
 
     // Create the animal sprite
     animal = new Sprite();
-    animal.img = animalAniFrames[0];
+    animal.img = animalIdleFrames[0];
     animal.position = createVector(500, 500);
     animal.visible = false; // Initially hidden
     animal.collider = 'k';
@@ -100,8 +113,12 @@ function draw() {
             background(constpaper);
             image(constpaper);
             // Draw the start button
-            fill("black");
-            rect(710, 700, 400, 200, 20); // Start button area
+
+            if (frameCount % 30 === 0) {
+                togglegobutton = !togglegobutton; }
+                image(togglegobutton ? go1 : go2, 710,500);
+            // fill("black");
+            // rect(710, 700, 400, 200, 20); // Start button area
             animal.visible = false;
             animaldead.visible = false; // Hide the animal in stage 0
             break;
@@ -119,39 +136,45 @@ function draw() {
         case 2:
             // End screen
             background(constpaper); // Black background for stage 2
-
+            let frames = deerAniSet === 0 ? deerActionFrames : animalIdleFrames;
 
 
             if (frameCounter >= frameDelay) {
-                currentFrame = (currentFrame + 1) % animalAniFrames.length; // Cycle through frames
-                animal.img = animalAniFrames[currentFrame]; // Update sprite image
+                currentFrame = (currentFrame + 1) % frames.length; // Cycle through frames
+                animal.img = frames[currentFrame]; // Update sprite image
                 frameCounter = 0; // Reset frame counter
             }
             frameCounter++;
-            // // Animal movement logic
-            // animal.position.x += animal.vel.x;
-            // animal.position.y += animal.vel.y;
 
-            // Draw a white circle at the mouse position
-            fill("white");
-            strokeWeight(10);
-            let circleRadius = 200; // Circle radius (diameter was 600)
-            circle(mouseX, mouseY, circleRadius * 2); // Circle with a fixed diameter of 600
-
-
-
-            // if (animal.position.x > windowWidth || animal.position.x < 0) {
-            //     animal.vel.x *= -1; // Reverse horizontal velocity
-            // }
-            // if (animal.position.y > windowHeight || animal.position.y < 0) {
-            //     animal.vel.y *= -1; // Reverse vertical velocity
-            // }
-
-            // Check if 5 seconds have passed since clickTime
-            if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
-                animalbutton.visible = true; // Show the button after 5 seconds
+            if (deerAniSet === 0 && millis() >= clickTime + 3000) {
+                deerAniSet = 1;
+                currentFrame = 0;
             }
-            break;
+
+            
+                // // Animal movement logic
+                // animal.position.x += animal.vel.x;
+                // animal.position.y += animal.vel.y;
+                push();
+                imageMode(CENTER);
+                image(crosshairs, mouseX, mouseY);
+                pop();
+                // allows crosshairs to be centered
+
+
+
+                // if (animal.position.x > windowWidth || animal.position.x < 0) {
+                //     animal.vel.x *= -1; // Reverse horizontal velocity
+                // }
+                // if (animal.position.y > windowHeight || animal.position.y < 0) {
+                //     animal.vel.y *= -1; // Reverse vertical velocity
+                // }
+
+                // Check if 5 seconds have passed since clickTime
+                if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
+                    animalbutton.visible = true; // Show the button after 5 seconds
+                }
+                break;
 
         case 3:
             knife.visible = true;
@@ -173,6 +196,7 @@ function draw() {
 
         case 4:
             background(constpaper);
+            break;
 
     }
 
