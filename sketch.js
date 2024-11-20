@@ -8,12 +8,13 @@ let animalImg;
 let animaldeadImg;
 let animalisdead = false; // Flag
 let clickTime = null; // To store when the animal is clicked
-let timeToSlice = null; 
+let timeToSlice = null;
 let deer1Img, deer2Img;
 let animalAniFrames = [];
 let currentFrame = 0;
 let frameDelay = 25;
 let frameCounter = 0;
+let constpaper;
 
 
 
@@ -26,6 +27,7 @@ function preload() {
     deer1Img = loadImage("assets/deer1.png");
     deer2Img = loadImage("assets/deer2.png");
     animalAniFrames = [deer1Img, deer2Img];
+    constpaper = loadImage("assets/constpaperbackground.jpg")
 
 }
 
@@ -94,9 +96,9 @@ function draw() {
             //     togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
             // }
             // background(togglemenubackground ? menubackground1 : menubackground2);
-            
-        background("grey");
-        image(menubackground1, 0, 0, windowWidth, windowHeight);
+
+            background(constpaper);
+            image(constpaper);
             // Draw the start button
             fill("black");
             rect(710, 700, 400, 200, 20); // Start button area
@@ -106,7 +108,7 @@ function draw() {
 
         case 1:
             // Another menu
-            background("grey");
+            background(constpaper);
             fill(0, 0, 0, 0); // Transparent rectangle
             strokeWeight(1);
             rect(200, 150, 350, 400); // Optional visual area
@@ -116,13 +118,9 @@ function draw() {
 
         case 2:
             // End screen
-            background("grey"); // Black background for stage 2
+            background(constpaper); // Black background for stage 2
 
-            // Draw a white circle at the mouse position
-            fill("white");
-            strokeWeight(10);
-            let circleRadius = 200; // Circle radius (diameter was 600)
-            circle(mouseX, mouseY, circleRadius * 2); // Circle with a fixed diameter of 600
+
 
             if (frameCounter >= frameDelay) {
                 currentFrame = (currentFrame + 1) % animalAniFrames.length; // Cycle through frames
@@ -133,6 +131,12 @@ function draw() {
             // // Animal movement logic
             // animal.position.x += animal.vel.x;
             // animal.position.y += animal.vel.y;
+
+            // Draw a white circle at the mouse position
+            fill("white");
+            strokeWeight(10);
+            let circleRadius = 200; // Circle radius (diameter was 600)
+            circle(mouseX, mouseY, circleRadius * 2); // Circle with a fixed diameter of 600
 
 
 
@@ -149,30 +153,30 @@ function draw() {
             }
             break;
 
-            case 3:
-                knife.visible = true;
-                animalbutton.visible = false;
-                animaldead.visible = false;
-                background("blue");
-                animalgutstop.visible = true;
-        
-                // Check if knife reaches the x-coordinate
-                if (knife.x > 1000 && timeToSlice === null) {
-                    timeToSlice = millis(); // Record the time only once
-                }
-        
-                // Show gutsbutton 5 seconds after the knife reaches the point
-                if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
-                    gutsbutton.visible = true; // Show the button
-                }
-                break;
+        case 3:
+            knife.visible = true;
+            animalbutton.visible = false;
+            animaldead.visible = false;
+            background("blue");
+            animalgutstop.visible = true;
+
+            // Check if knife reaches the x-coordinate
+            if (knife.x > 1000 && timeToSlice === null) {
+                timeToSlice = millis(); // Record the time only once
+            }
+
+            // Show gutsbutton 5 seconds after the knife reaches the point
+            if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
+                gutsbutton.visible = true; // Show the button
+            }
+            break;
 
         case 4:
-        background("green");  
-            
+            background(constpaper);
+
     }
 
-    console.log(gutsbutton.visible, mouseX,mouseY);
+    console.log(gutsbutton.visible, mouseX, mouseY);
 }
 
 function mouseDragged() {
@@ -209,7 +213,7 @@ function mouseReleased() {
         let threshold1 = 200;
         let distToAnimal = dist(mouseX, mouseY, animal.position.x, animal.position.y);
 
-        if (distToAnimal < threshold1) {
+        if (!animalisdead && distToAnimal < threshold1) {
             animal.visible = false;
             animal.vel.x = 0;
             animal.vel.y = 0; // Stop the animal from moving
@@ -230,9 +234,9 @@ function mouseReleased() {
     else if (stage === 3) {
 
         knife.velocity.x = 0.1;
-       
+
         let threshold3 = 50;
-     
+
         let distToButton2 = dist(mouseX, mouseY, gutsbutton.position.x, gutsbutton.position.y);
         if (distToButton2 < threshold3) {
             stage = 4; // Transition to stage 3
