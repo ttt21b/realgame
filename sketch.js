@@ -9,26 +9,38 @@ let animaldeadImg;
 let animalisdead = false; // Flag
 let clickTime = null; // To store when the animal is clicked
 let timeToSlice = null; 
+let deer1Img, deer2Img;
+let animalAniFrames = [];
+let currentFrame = 0;
+let frameDelay = 25;
+let frameCounter = 0;
+
+
 
 
 function preload() {
-    menubackground1 = loadImage("assets/background1.png");
+    menubackground1 = loadImage("assets/realbackground.png");
     menubackground2 = loadImage("assets/background2.png");
     animalImg = loadImage("assets/placeholderanimal.png");
     animaldeadImg = loadImage("assets/redx.png");
+    deer1Img = loadImage("assets/deer1.png");
+    deer2Img = loadImage("assets/deer2.png");
+    animalAniFrames = [deer1Img, deer2Img];
+
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     ellipseMode(CENTER);
 
+
     // Create the animal sprite
     animal = new Sprite();
-    animal.img = animalImg;
+    animal.img = animalAniFrames[0];
     animal.position = createVector(500, 500);
     animal.visible = false; // Initially hidden
     animal.collider = 'k';
-    animal.vel = createVector(2, 2); // Set the initial velocity
+    //animal.vel = createVector(2, 2); // Set the initial velocity
 
     animaldead = new Sprite();
     animaldead.img = animaldeadImg;
@@ -77,12 +89,14 @@ function setup() {
 function draw() {
     switch (stage) {
         case 0:
-            // Title screen with alternating background
-            if (frameCount % 100 === 0) {
-                togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
-            }
-            background(togglemenubackground ? menubackground1 : menubackground2);
-
+            // // Title screen with alternating background
+            // if (frameCount % 100 === 0) {
+            //     togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
+            // }
+            // background(togglemenubackground ? menubackground1 : menubackground2);
+            
+        background("grey");
+        image(menubackground1, 0, 0, windowWidth, windowHeight);
             // Draw the start button
             fill("black");
             rect(710, 700, 400, 200, 20); // Start button area
@@ -110,16 +124,24 @@ function draw() {
             let circleRadius = 200; // Circle radius (diameter was 600)
             circle(mouseX, mouseY, circleRadius * 2); // Circle with a fixed diameter of 600
 
-            // Animal movement logic
-            animal.position.x += animal.vel.x;
-            animal.position.y += animal.vel.y;
+            if (frameCounter >= frameDelay) {
+                currentFrame = (currentFrame + 1) % animalAniFrames.length; // Cycle through frames
+                animal.img = animalAniFrames[currentFrame]; // Update sprite image
+                frameCounter = 0; // Reset frame counter
+            }
+            frameCounter++;
+            // // Animal movement logic
+            // animal.position.x += animal.vel.x;
+            // animal.position.y += animal.vel.y;
 
-            if (animal.position.x > windowWidth || animal.position.x < 0) {
-                animal.vel.x *= -1; // Reverse horizontal velocity
-            }
-            if (animal.position.y > windowHeight || animal.position.y < 0) {
-                animal.vel.y *= -1; // Reverse vertical velocity
-            }
+
+
+            // if (animal.position.x > windowWidth || animal.position.x < 0) {
+            //     animal.vel.x *= -1; // Reverse horizontal velocity
+            // }
+            // if (animal.position.y > windowHeight || animal.position.y < 0) {
+            //     animal.vel.y *= -1; // Reverse vertical velocity
+            // }
 
             // Check if 5 seconds have passed since clickTime
             if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
