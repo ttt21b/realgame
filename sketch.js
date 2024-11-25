@@ -21,6 +21,11 @@ let deerAniSet = 0;
 let gobutton1, gobutton2;
 let togglegobutton = true;
 let potato1, potato2, potato3, potato4;
+let peeler;
+
+let potatotime = null;
+
+let potatobutton;
 
 
 let potatocounter = 0;
@@ -109,38 +114,55 @@ function setup() {
     potato1.height = 100;
     potato1.visible = false;
     potato1.collider = 'd';
-    potato1.drag = 10;
-    potato1.position = createVector(500,100);
-    potato1.placed = false; 
+    potato1.drag = 15;
+    potato1.position = createVector(500, 100);
+    potato1.placed = false;
 
     potato2 = new Sprite();
     potato2.width = 100;
     potato2.height = 100;
     potato2.visible = false;
     potato2.collider = 'd';
-    potato2.drag = 10;
-    potato2.position = createVector(0,100);
-    potato2.placed = false; 
+    potato2.drag = 15;
+    potato2.position = createVector(0, 100);
+    potato2.placed = false;
 
     potato3 = new Sprite();
     potato3.width = 100;
     potato3.height = 100;
     potato3.visible = false;
     potato3.collider = 'd';
-    potato3.drag = 10;
-    potato3.position = createVector(100,500);
-    potato3.placed = false; 
+    potato3.drag = 15;
+    potato3.position = createVector(100, 500);
+    potato3.placed = false;
 
     potato4 = new Sprite();
     potato4.width = 100;
     potato4.height = 100;
     potato4.visible = false;
     potato4.collider = 'd';
-    potato4.drag = 10;
-    potato4.position = createVector(500,100);
-    potato4.placed = false; 
+    potato4.drag = 15;
+    potato4.position = createVector(500, 100);
+    potato4.placed = false;
 
-  
+    potatobutton = new Sprite();
+    potatobutton.width = 100;
+    potatobutton.height = 100;
+    potatobutton.collider = 'static';
+    potatobutton.visible = false;
+    potatobutton.position = createVector(100, 100);
+
+    peeler = new Sprite();
+    peeler.width = 100;
+    peeler.height = 100;
+    peeler.visible = false;
+    peeler.collider = 'd';
+    peeler.drag = 15;
+    peeler.position = createVector(500, 100);
+
+
+
+
     // basket.position = createVector(500,500);
 }
 
@@ -158,8 +180,9 @@ function draw() {
             // Draw the start button
 
             if (frameCount % 30 === 0) {
-                togglegobutton = !togglegobutton; }
-                image(togglegobutton ? go1 : go2, 710,500);
+                togglegobutton = !togglegobutton;
+            }
+            image(togglegobutton ? go1 : go2, 710, 500);
             // fill("black");
             // rect(710, 700, 400, 200, 20); // Start button area
             animal.visible = false;
@@ -194,30 +217,30 @@ function draw() {
                 currentFrame = 0;
             }
 
-            
-                // // Animal movement logic
-                // animal.position.x += animal.vel.x;
-                // animal.position.y += animal.vel.y;
-                push();
-                imageMode(CENTER);
-                image(crosshairs, mouseX, mouseY);
-                pop();
-                // allows crosshairs to be centered
+
+            // // Animal movement logic
+            // animal.position.x += animal.vel.x;
+            // animal.position.y += animal.vel.y;
+            push();
+            imageMode(CENTER);
+            image(crosshairs, mouseX, mouseY);
+            pop();
+            // allows crosshairs to be centered
 
 
 
-                // if (animal.position.x > windowWidth || animal.position.x < 0) {
-                //     animal.vel.x *= -1; // Reverse horizontal velocity
-                // }
-                // if (animal.position.y > windowHeight || animal.position.y < 0) {
-                //     animal.vel.y *= -1; // Reverse vertical velocity
-                // }
+            // if (animal.position.x > windowWidth || animal.position.x < 0) {
+            //     animal.vel.x *= -1; // Reverse horizontal velocity
+            // }
+            // if (animal.position.y > windowHeight || animal.position.y < 0) {
+            //     animal.vel.y *= -1; // Reverse vertical velocity
+            // }
 
-                // Check if 5 seconds have passed since clickTime
-                if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
-                    animalbutton.visible = true; // Show the button after 5 seconds
-                }
-                break;
+            // Check if 5 seconds have passed since clickTime
+            if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
+                animalbutton.visible = true; // Show the button after 5 seconds
+            }
+            break;
 
         // case 3:
         //     // knife.visible = true;
@@ -231,10 +254,10 @@ function draw() {
         //     animaldead.collider = 'none';
         //     animal.collider = 'none';
         //     gutsbutton.collider = 'none';
-            
-           
+
+
         //     background(constpaper);
-            
+
         //     rect(600,600,1000,100);
         //     fill('blue');
 
@@ -242,28 +265,28 @@ function draw() {
         //         potato1.moveTowards(
         //             mouseX, mouseY, 1
         //         )
-            
+
         //     }
         //     if (potato2.mouse.dragging()) {
         //         potato2.moveTowards(
         //             mouseX, mouseY, 1
         //         )
-            
+
         //     }   if (potato3.mouse.dragging()) {
         //         potato3.moveTowards(
         //             mouseX, mouseY, 1
         //         )
-            
+
         //     }
 
         //     if (potato4.mouse.dragging()) {
         //         potato4.moveTowards(
         //             mouseX, mouseY, 1
         //         )
-            
+
         //     }
-            
-            
+
+
 
         //     if (potato1.position.x >= 600 && potato1.position.x <= 1600 && potato1.position.y >= 600 && potato1.position.y <= 700) {
         //         potato1.visible = false;
@@ -281,7 +304,7 @@ function draw() {
         //         potatocounter++;
         //     }
 
-            
+
         //     if (potato3.position.x >= 600 && potato3.position.x <= 1600 && potato3.position.y >= 600 && potato3.position.y <= 700) {
         //         potato3.visible = false;
         //         potato3.vel.x = 0;
@@ -297,7 +320,7 @@ function draw() {
         //         potato4.collider = 'none';
         //         potatocounter++;
         //     }
-            
+
         case 3:
             // Reset visibility and collisions for unrelated sprites
             animalbutton.visible = false;
@@ -306,27 +329,40 @@ function draw() {
             animaldead.collider = 'none';
             animal.collider = 'none';
             gutsbutton.collider = 'none';
-        
+            potatobutton.collider = 'none';
+
+
+
+            if (potatocounter === 4 && potatotime === null) {
+                potatotime = millis();
+            }
+
+
+            if (potatocounter == 4 && potatotime !== null && millis() >= potatotime + 5000) {
+                potatobutton.visible = true;
+
+            }
+
             // Set stage background
             background(constpaper);
-        
+
             // Draw basket area (replace with basket sprite if needed)
             fill('blue');
             rect(600, 600, 1000, 100);
-        
+
             // Array of potatoes
             let potatoes = [potato1, potato2, potato3, potato4];
-        
+
             // Handle potato logic
             potatoes.forEach((potato) => {
                 if (!potato.placed) {
                     potato.visible = true; // Make the potato visible
-        
+
                     // Enable dragging
                     if (potato.mouse.dragging()) {
                         potato.moveTowards(mouseX, mouseY, 1); // Smooth dragging
                     }
-        
+
                     // Check if the potato is inside the basket
                     if (potato.position.x >= 600 && potato.position.x <= 1600 &&
                         potato.position.y >= 600 && potato.position.y <= 700) {
@@ -341,34 +377,48 @@ function draw() {
 
             if (potatocounter == 1) {
                 //show an image
+                fill('red');
+                rect(600, 600, 1000, 100);
             }
-        
+            if (potatocounter == 2) {
+                //show an image
+                fill('green');
+                rect(600, 600, 1000, 100);
+            }
+            if (potatocounter == 3) {
+                //show an image
+                fill('yellow');
+                rect(600, 600, 1000, 100);
+            }
+            if (potatocounter == 4) {
+                //show an image
+                fill('orange');
+                rect(600, 600, 1000, 100);
+            }
+
+
             break;
-        
-        
-        
 
 
-      
 
+        // animalgutstop.visible = true;
 
-            
+        // // Check if knife reaches the x-coordinate
+        // if (knife.x > 1000 && timeToSlice === null) {
+        //     timeToSlice = millis(); // Record the time only once
+        // }
 
-            // animalgutstop.visible = true;
+        // // Show gutsbutton 5 seconds after the knife reaches the point
+        // if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
+        //     gutsbutton.visible = true; // Show the button
+        // }
 
-            // // Check if knife reaches the x-coordinate
-            // if (knife.x > 1000 && timeToSlice === null) {
-            //     timeToSlice = millis(); // Record the time only once
-            // }
-
-            // // Show gutsbutton 5 seconds after the knife reaches the point
-            // if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
-            //     gutsbutton.visible = true; // Show the button
-            // }
-            break;
 
         case 4:
             background(constpaper);
+            potatobutton.visible = false;
+
+            
             break;
 
     }
@@ -438,6 +488,12 @@ function mouseReleased() {
         // if (distToButton2 < threshold3) {
         //     stage = 4; // Transition to stage 3
         // }
+
+        let threshold4 = 50;
+        let distToButton = dist(mouseX, mouseY, potatobutton.position.x, potatobutton.position.y);
+        if (distToButton < threshold4) {
+            stage = 4; // Transition to stage 3
+        }
     }
 
 
