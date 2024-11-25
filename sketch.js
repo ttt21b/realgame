@@ -20,6 +20,10 @@ let deerActionFrames = [];
 let deerAniSet = 0;
 let gobutton1, gobutton2;
 let togglegobutton = true;
+let potato1, potato2, potato3, potato4;
+
+
+let potatocounter = 0;
 
 
 
@@ -74,21 +78,21 @@ function setup() {
     animalgutstop = new Sprite();
     animalgutstop.width = 700;
     animalgutstop.height = 100;
-    animalgutstop.collider = 'd'
+    animalgutstop.collider = 'none'
     animalgutstop.visible = false;
     animalgutstop.position = createVector(1000, 500);
 
     animalgutsbottom = new Sprite();
     animalgutsbottom.width = 700;
     animalgutsbottom.height = 100;
-    animalgutsbottom.collider = 'd';
+    animalgutsbottom.collider = 'none';
     animalgutsbottom.visible = false;
     animalgutsbottom.position = createVector(1000, 800);
 
     knife = new Sprite();
     knife.width = 100;
     knife.height = 100;
-    knife.collider = 'd';
+    knife.collider = 'none';
     knife.visible = false;
     knife.position = createVector(100, 500);
     knife.drag = 100;
@@ -99,6 +103,45 @@ function setup() {
     gutsbutton.collider = 'static';
     gutsbutton.visible = false;
     gutsbutton.position = createVector(100, 100);
+
+    potato1 = new Sprite();
+    potato1.width = 100;
+    potato1.height = 100;
+    potato1.visible = false;
+    potato1.collider = 'd';
+    potato1.drag = 10;
+    potato1.position = createVector(500,100);
+    potato1.placed = false; 
+
+    potato2 = new Sprite();
+    potato2.width = 100;
+    potato2.height = 100;
+    potato2.visible = false;
+    potato2.collider = 'd';
+    potato2.drag = 10;
+    potato2.position = createVector(0,100);
+    potato2.placed = false; 
+
+    potato3 = new Sprite();
+    potato3.width = 100;
+    potato3.height = 100;
+    potato3.visible = false;
+    potato3.collider = 'd';
+    potato3.drag = 10;
+    potato3.position = createVector(100,500);
+    potato3.placed = false; 
+
+    potato4 = new Sprite();
+    potato4.width = 100;
+    potato4.height = 100;
+    potato4.visible = false;
+    potato4.collider = 'd';
+    potato4.drag = 10;
+    potato4.position = createVector(500,100);
+    potato4.placed = false; 
+
+  
+    // basket.position = createVector(500,500);
 }
 
 function draw() {
@@ -176,22 +219,152 @@ function draw() {
                 }
                 break;
 
+        // case 3:
+        //     // knife.visible = true;
+        //     animalbutton.visible = false;
+        //     animaldead.visible = false;
+        //     potato1.visible = true;
+        //     potato2.visible = true;
+        //     potato3.visible = true;
+        //     potato4.visible = true;   
+        //     animalbutton.collider = 'none';
+        //     animaldead.collider = 'none';
+        //     animal.collider = 'none';
+        //     gutsbutton.collider = 'none';
+            
+           
+        //     background(constpaper);
+            
+        //     rect(600,600,1000,100);
+        //     fill('blue');
+
+        //     if (potato1.mouse.dragging()) {
+        //         potato1.moveTowards(
+        //             mouseX, mouseY, 1
+        //         )
+            
+        //     }
+        //     if (potato2.mouse.dragging()) {
+        //         potato2.moveTowards(
+        //             mouseX, mouseY, 1
+        //         )
+            
+        //     }   if (potato3.mouse.dragging()) {
+        //         potato3.moveTowards(
+        //             mouseX, mouseY, 1
+        //         )
+            
+        //     }
+
+        //     if (potato4.mouse.dragging()) {
+        //         potato4.moveTowards(
+        //             mouseX, mouseY, 1
+        //         )
+            
+        //     }
+            
+            
+
+        //     if (potato1.position.x >= 600 && potato1.position.x <= 1600 && potato1.position.y >= 600 && potato1.position.y <= 700) {
+        //         potato1.visible = false;
+        //         potato1.vel.x = 0;
+        //         potato1.vel.y = 0;
+        //         potato1.collider = 'none';
+        //         potatocounter++;
+        //     }
+
+        //     if (potato2.position.x >= 600 && potato2.position.x <= 1600 && potato2.position.y >= 600 && potato2.position.y <= 700) {
+        //         potato2.visible = false;
+        //         potato2.vel.x = 0;
+        //         potato2.vel.y = 0;
+        //         potato2.collider = 'none';
+        //         potatocounter++;
+        //     }
+
+            
+        //     if (potato3.position.x >= 600 && potato3.position.x <= 1600 && potato3.position.y >= 600 && potato3.position.y <= 700) {
+        //         potato3.visible = false;
+        //         potato3.vel.x = 0;
+        //         potato3.vel.y = 0;
+        //         potato3.collider = 'none';
+        //         potatocounter++;
+        //     }
+
+        //     if (potato4.position.x >= 600 && potato4.position.x <= 1600 && potato4.position.y >= 600 && potato4.position.y <= 700) {
+        //         potato4.visible = false;
+        //         potato4.vel.x = 0;
+        //         potato4.vel.y = 0;
+        //         potato4.collider = 'none';
+        //         potatocounter++;
+        //     }
+            
         case 3:
-            knife.visible = true;
+            // Reset visibility and collisions for unrelated sprites
             animalbutton.visible = false;
             animaldead.visible = false;
-            background("blue");
-            animalgutstop.visible = true;
+            animalbutton.collider = 'none';
+            animaldead.collider = 'none';
+            animal.collider = 'none';
+            gutsbutton.collider = 'none';
+        
+            // Set stage background
+            background(constpaper);
+        
+            // Draw basket area (replace with basket sprite if needed)
+            fill('blue');
+            rect(600, 600, 1000, 100);
+        
+            // Array of potatoes
+            let potatoes = [potato1, potato2, potato3, potato4];
+        
+            // Handle potato logic
+            potatoes.forEach((potato) => {
+                if (!potato.placed) {
+                    potato.visible = true; // Make the potato visible
+        
+                    // Enable dragging
+                    if (potato.mouse.dragging()) {
+                        potato.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+                    }
+        
+                    // Check if the potato is inside the basket
+                    if (potato.position.x >= 600 && potato.position.x <= 1600 &&
+                        potato.position.y >= 600 && potato.position.y <= 700) {
+                        potato.visible = false;     // Hide the potato after placement
+                        potato.collider = 'none';  // Disable its collider
+                        potato.placed = true;      // Mark it as placed
+                        potatocounter++;           // Increment the counter once
+                        console.log(`Potato placed! Total potatoes: ${potatocounter}`);
+                    }
+                }
+            });
 
-            // Check if knife reaches the x-coordinate
-            if (knife.x > 1000 && timeToSlice === null) {
-                timeToSlice = millis(); // Record the time only once
+            if (potatocounter == 1) {
+                //show an image
             }
+        
+            break;
+        
+        
+        
 
-            // Show gutsbutton 5 seconds after the knife reaches the point
-            if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
-                gutsbutton.visible = true; // Show the button
-            }
+
+      
+
+
+            
+
+            // animalgutstop.visible = true;
+
+            // // Check if knife reaches the x-coordinate
+            // if (knife.x > 1000 && timeToSlice === null) {
+            //     timeToSlice = millis(); // Record the time only once
+            // }
+
+            // // Show gutsbutton 5 seconds after the knife reaches the point
+            // if (timeToSlice !== null && millis() >= timeToSlice + 5000) {
+            //     gutsbutton.visible = true; // Show the button
+            // }
             break;
 
         case 4:
@@ -200,7 +373,7 @@ function draw() {
 
     }
 
-    console.log(gutsbutton.visible, mouseX, mouseY);
+    console.log(potatocounter);
 }
 
 function mouseDragged() {
@@ -257,14 +430,14 @@ function mouseReleased() {
     }
     else if (stage === 3) {
 
-        knife.velocity.x = 0.1;
+        // knife.velocity.x = 0.1;
 
-        let threshold3 = 50;
+        // let threshold3 = 50;
 
-        let distToButton2 = dist(mouseX, mouseY, gutsbutton.position.x, gutsbutton.position.y);
-        if (distToButton2 < threshold3) {
-            stage = 4; // Transition to stage 3
-        }
+        // let distToButton2 = dist(mouseX, mouseY, gutsbutton.position.x, gutsbutton.position.y);
+        // if (distToButton2 < threshold3) {
+        //     stage = 4; // Transition to stage 3
+        // }
     }
 
 
