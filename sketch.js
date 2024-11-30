@@ -50,7 +50,10 @@ function preload() {
     crosshairs = loadImage("assets/crosshairs.png")
     go1 = loadImage("assets/gobutton1.png");
     go2 = loadImage("assets/gobutton2.png");
-
+    potato1IMG = loadImage("assets/potato1.png");
+    potato2IMG = loadImage("assets/potato2.png");
+    potato3IMG = loadImage("assets/potato3.png");
+    potato4IMG = loadImage("assets/potato4.png");
 }
 
 function setup() {
@@ -110,15 +113,20 @@ function setup() {
     gutsbutton.position = createVector(100, 100);
 
     potato1 = new Sprite();
+    potato1.img = potato1IMG;
+    potato1.scale = .5;
     potato1.width = 100;
-    potato1.height = 100;
+    potato1.height = 100;   
     potato1.visible = false;
     potato1.collider = 'd';
     potato1.drag = 15;
     potato1.position = createVector(500, 100);
     potato1.placed = false;
+    potato1.rotation = 0;
 
     potato2 = new Sprite();
+    potato2.img = potato2IMG;
+    potato2.scale =.5;
     potato2.width = 100;
     potato2.height = 100;
     potato2.visible = false;
@@ -126,17 +134,26 @@ function setup() {
     potato2.drag = 15;
     potato2.position = createVector(0, 100);
     potato2.placed = false;
+    potato2.rotation = 0;
+    
+
 
     potato3 = new Sprite();
+    potato3.scale = .5;
     potato3.width = 100;
+    potato3.img = potato3IMG;
     potato3.height = 100;
     potato3.visible = false;
     potato3.collider = 'd';
     potato3.drag = 15;
     potato3.position = createVector(100, 500);
     potato3.placed = false;
+    potato3.rotation = 0;
 
     potato4 = new Sprite();
+    potato4.scale = .5;
+    potato4.rotation = 0;
+    potato4.img = potato4IMG;
     potato4.width = 100;
     potato4.height = 100;
     potato4.visible = false;
