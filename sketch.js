@@ -30,6 +30,16 @@ let potatobutton;
 
 let potatocounter = 0;
 
+let field1, field2;
+let togglefield = true;
+let trees;
+
+let protein1, protein2;
+let toggleprotein = true;
+let nextbutton;
+
+let bucket1, bucket2, bucket3, bucket4, bucket0;
+
 
 
 
@@ -38,7 +48,7 @@ function preload() {
     menubackground1 = loadImage("assets/realbackground.png");
     menubackground2 = loadImage("assets/background2.png");
     animalImg = loadImage("assets/placeholderanimal.png");
-    animaldeadImg = loadImage("assets/redx.png");
+    animaldeadImg = loadImage("assets/deaddeer.png");
     deer1Img = loadImage("assets/deer1.png");
     deer2Img = loadImage("assets/deer2.png");
     deer3Img = loadImage("assets/deer3.png");
@@ -54,6 +64,19 @@ function preload() {
     potato2IMG = loadImage("assets/potato2.png");
     potato3IMG = loadImage("assets/potato3.png");
     potato4IMG = loadImage("assets/potato4.png");
+    field1 = loadImage("assets/field1.png");
+    field2 = loadImage("assets/field2.png");
+    trees = loadImage("assets/trees.png");
+    protein1 = loadImage("assets/protein1.png");
+    protein2 = loadImage("assets/protein2.png");
+    nextbutton = loadImage("assets/nextbutton.png");
+
+    bucket0 = loadImage("assets/bucket0.png");
+    bucket1 = loadImage("assets/bucket1.png");
+    bucket2 = loadImage("assets/bucket2.png");
+    bucket3 = loadImage("assets/bucket3.png");
+    bucket4 = loadImage("assets/bucket4.png");
+
 }
 
 function setup() {
@@ -77,11 +100,13 @@ function setup() {
 
 
     animalbutton = new Sprite();
+    animalbutton.scale = .5;
+    animalbutton.img = nextbutton;
     animalbutton.width = 100;
     animalbutton.height = 100;
     animalbutton.collider = 'static';
     animalbutton.visible = false;
-    animalbutton.position = createVector(100, 100);
+    animalbutton.position = createVector(1750, 100);
 
     animalgutstop = new Sprite();
     animalgutstop.width = 700;
@@ -218,7 +243,19 @@ function draw() {
 
         case 2:
             // End screen
-            background(constpaper); // Black background for stage 2
+            background(constpaper);
+            image(trees, 0, 0, windowWidth, windowHeight);
+
+            if (frameCount % 30 === 0) {
+                togglefield = !togglefield;
+            }
+            image(togglefield ? field1 : field2 , 0, 0, windowWidth, windowHeight);
+
+            if (frameCount % 30 === 0) {
+                toggleprotein = !toggleprotein;
+            }
+            image(toggleprotein ? protein1 : protein2 , 0, 0, windowWidth, windowHeight);
+            // image(field1, 0, 0, windowWidth, windowHeight) // Black background for stage 2
             let frames = deerAniSet === 0 ? deerActionFrames : animalIdleFrames;
 
 
@@ -238,10 +275,7 @@ function draw() {
             // // Animal movement logic
             // animal.position.x += animal.vel.x;
             // animal.position.y += animal.vel.y;
-            push();
-            imageMode(CENTER);
-            image(crosshairs, mouseX, mouseY);
-            pop();
+        
             // allows crosshairs to be centered
 
 
@@ -257,6 +291,11 @@ function draw() {
             if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
                 animalbutton.visible = true; // Show the button after 5 seconds
             }
+
+            push();
+            imageMode(CENTER);
+            image(crosshairs, mouseX, mouseY);
+            pop();
             break;
 
         // case 3:
@@ -348,6 +387,8 @@ function draw() {
             gutsbutton.collider = 'none';
             potatobutton.collider = 'none';
 
+         
+
 
 
             if (potatocounter === 4 && potatotime === null) {
@@ -362,6 +403,8 @@ function draw() {
 
             // Set stage background
             background(constpaper);
+
+            image(bucket0, 0,0, windowWidth, windowHeight);
 
             // Draw basket area (replace with basket sprite if needed)
             fill('blue');
@@ -394,23 +437,18 @@ function draw() {
 
             if (potatocounter == 1) {
                 //show an image
-                fill('red');
-                rect(600, 600, 1000, 100);
+                image(bucket1, 0, 0, windowWidth, windowHeight);
             }
             if (potatocounter == 2) {
                 //show an image
-                fill('green');
-                rect(600, 600, 1000, 100);
+                image(bucket2, 0, 0, windowWidth, windowHeight);
             }
             if (potatocounter == 3) {
-                //show an image
-                fill('yellow');
-                rect(600, 600, 1000, 100);
+                image(bucket3, 0, 0, windowWidth, windowHeight);
             }
             if (potatocounter == 4) {
                 //show an image
-                fill('orange');
-                rect(600, 600, 1000, 100);
+                image(bucket4, 0, 0, windowWidth, windowHeight);
             }
 
 
