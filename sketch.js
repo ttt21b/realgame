@@ -10,6 +10,8 @@ let toggleshovel = true;
 let enterTime = -1; // Variable to store the time when venisonraw enters the area
 let cookingTime = 10000;
 
+let dish;
+
  
 
 let stage = 0;
@@ -157,6 +159,8 @@ function preload() {
     shovel2 = loadImage("assets/shovel2.png");
 
     venisoncooked = loadImage("assets/venisoncooked.png")
+
+    dish = loadImage("assets/dish.png");
   
 }
 
@@ -937,6 +941,8 @@ rawfries.visible = false;
 rawfries.collider = 'none';
 venisonraw.visible = false;
 venisonraw.collider = 'none';
+
+image(dish, 660, 200, 700, 700);
 
 
 
