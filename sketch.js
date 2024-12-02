@@ -2,6 +2,7 @@
 let pastcut = false;
 let potatoState = 1;
 let revealTime = null;
+let friesPlacedTime = null;
 
 let stage = 0;
 let togglemenubackground = true; // Variable to toggle background image
@@ -53,9 +54,19 @@ let trash1IMG, trash2IMG, trash3IMG;
 let potatosign1, potatosign2;
 let togglepotatosign = true;
 
-let peel1, peel2, peel3, peel4;
+let peel1, peel2, peel3, peel4, peel5;
 let katana;
 let peelbutton;
+
+let rawfries, rawfriesIMG;
+
+let cauldron1, cauldron2;
+let togglecauldron = true;
+
+let oil1, oil2, oil3;
+let toggleoil = true;
+
+let cookedfries;
 
 
 
@@ -112,8 +123,21 @@ function preload() {
     peel2 = loadImage("assets/peel2.png")
     peel3 = loadImage("assets/peel3.png")
     peel4 = loadImage("assets/peel4.png")
+    peel5 = loadImage("assets/peel5.png")
 
     katanaimg = loadImage("assets/katana.png")
+    
+    rawfriesIMG = loadImage("assets/rawfries.png")
+
+    cauldron1 = loadImage("assets/cauldron1.png")
+    
+    cauldron2 = loadImage("assets/cauldron2.png")
+
+    oil1 = loadImage("assets/oil1.png");
+    oil2 = loadImage("assets/oil2.png");
+    oil3 = loadImage("assets/oil3.png");
+    cookedfries = loadImage("assets/cookedfries.png")
+  
 }
 
 function setup() {
@@ -267,6 +291,7 @@ function setup() {
     trash1.collider = 'd';
     trash1.drag = 15;
     trash1.position = createVector(400, 500);
+    trash1.rotationSpeed = 0;
 
     trash2 = new Sprite();
     trash2.scale = .4;
@@ -308,6 +333,18 @@ function setup() {
     peelbutton.collider = 'static';
     peelbutton.visible = false;
     peelbutton.position = createVector(150, 800);
+
+    rawfries = new Sprite();
+    rawfries.rotation = 0;
+    rawfries.img = rawfriesIMG;
+    rawfries.width = 100;
+    rawfries.height = 100;
+    rawfries.visible = false;
+    rawfries.collider = 'k';
+    rawfries.drag = 10;
+    rawfries.position = createVector(200, 770);
+    rawfries.rotationSpeed = 0;
+    rawfries.scale = 2;
 
    
 
@@ -496,6 +533,7 @@ function draw() {
             gutsbutton.collider = 'none';
             potatobutton.collider = 'none';
             bigpotato.collider = 'none';
+            rawfries.collider = 'none';
 
             katana.collider = 'none';
             trash1.visible = true;
@@ -717,28 +755,125 @@ function draw() {
     if (katana.position.x > 800 && potatoState < 4) {
         bigpotato.img = peel4; // Change to Peel4
         potatoState = 4;
+    }
+    if (katana.position.x > 900 && potatoState < 5) {
+        bigpotato.img = peel5; // Change to Peel4
+        potatoState = 5;
         revealTime = millis(); // Record the time when Peel4 is reached
     }
 
     // Show the button 3 seconds after reaching potatoState = 4
-    if (potatoState === 4 && revealTime !== null && millis() >= revealTime + 3000) {
+    if (potatoState === 5 && revealTime !== null && millis() >= revealTime + 3000) {
         peelbutton.visible = true; // Show the button
     }
 
+  
+
     break;
 
-    case 5:
-        background(constpaper);
-        bigpotato.visible = false;
-        katana.visible = false;
-       peelbutton.visible = false;
-    break;
+case 5:
+
+background(constpaper);
+peelbutton.visible = false;
+katana.visible = false;
+bigpotato.visible = false;
+
+// Display the raw fries and set the collider
+rawfries.visible = true;
+rawfries.collider = 'k';
+
+// Toggle the cauldron every 50 frames
+if (frameCount % 50 === 0) {
+    togglecauldron = !togglecauldron;
+}
+image(togglecauldron ? cauldron1 : cauldron2, 0, 0, windowWidth, windowHeight);
+
+// Toggle the oil image every 50 frames, regardless of fries placement
+if (frameCount % 50 === 0) {
+    toggleoil = !toggleoil;
+}
+
+// Make rawfries draggable
+if (rawfries.mouse.dragging()) {
+    rawfries.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+}
+
+// Check if rawfries is placed in the correct position
+if (rawfries.position.x >= 870 && rawfries.position.x <= 1800 &&
+    rawfries.position.y >= 520 && rawfries.position.y <= 830) {
+    
+    // Hide rawfries after placement and disable its collider
+    rawfries.visible = false;
+    rawfries.collider = 'none';
+
+    // Display the toggled oil image
+    image(toggleoil ? oil1 : oil2, 1000, 100, 800, 800);
+
+    // Record the time when rawfries were placed (visibility set to false)
+    if (friesPlacedTime === null) {
+        friesPlacedTime = millis();
+    }
+}
+
+// Check if 7 seconds have passed since fries were placed
+if (friesPlacedTime !== null && millis() - friesPlacedTime >= 7000) {
+    // Show the cooked fries image after 7 seconds
+    image(cookedFries, 1000, 500, 500, 500);  // Adjust position and size as needed
+}
+}
+//     background(constpaper);
+//     peelbutton.visible = false;
+//     katana.visible = false;
+//     bigpotato.visible = false;
+
+//     rawfries.visible = true;
+//     rawfries.collider = 'k';
+
+//     if (frameCount % 50 === 0) {
+//         togglecauldron = !togglecauldron;
+//     }
+//     image(togglecauldron ? cauldron1 : cauldron2 , 0, 0, windowWidth, windowHeight);
+
+
+//     if (rawfries.mouse.dragging()) {
+//         rawfries.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+//     }
+
+//     if (rawfries.position.x >= 870 && rawfries.position.x <= 1800 &&
+//        rawfries.position.y >= 520 && rawfries.position.y <= 830) {
+//         rawfries.visible = false;     // Hide the rawfries after placement
+//          rawfries.collider = 'none';
+
+       
+
+//          image(toggleoil? oil1 : oil2,  1000, 100, 800, 800);
+//          if (friesPlacedTime === null) {
+//             friesPlacedTime = millis();
+//         }
+//         } 
+        
+//         if (frameCount % 50 === 0) {
+//             toggleoil = !toggleoil;
+//          }
+
+         
+         
+//          // Disable its collider
+//     //     rawfries.placed = true;      // Mark it as placed
+//     //     rawfriescounter++;           // Increment the counter once
+//     //     console.log(`rawfries placed! Total rawfrieses: ${rawfriescounter}`);
+
+
+
+    
+
+
 
    
 
     
-}
-console.log(stage);
+// }
+console.log(mouseX, mouseY);
 }
 
 function mouseDragged() {
