@@ -39,6 +39,13 @@ let toggleprotein = true;
 let nextbutton;
 
 let bucket1, bucket2, bucket3, bucket4, bucket0;
+let garbage1, garbage2;
+let togglegarbage = true;
+
+let bird1, bird2;
+let togglebird = true;
+
+let trash1IMG, trash2IMG, trash3IMG;
 
 
 
@@ -77,6 +84,16 @@ function preload() {
     bucket3 = loadImage("assets/bucket3.png");
     bucket4 = loadImage("assets/bucket4.png");
 
+    garbage1 = loadImage("assets/garbage1.png");
+    garbage2 = loadImage("assets/garbage2.png");
+
+    bird1 = loadImage("assets/bird1.png");
+    
+    bird2 = loadImage("assets/bird2.png");
+
+    trash1IMG = loadImage("assets/bottle.png"); 
+    trash2IMG = loadImage("assets/can.png");
+    trash3IMG = loadImage("assets/apple.png");
 }
 
 function setup() {
@@ -106,7 +123,7 @@ function setup() {
     animalbutton.height = 100;
     animalbutton.collider = 'static';
     animalbutton.visible = false;
-    animalbutton.position = createVector(1750, 100);
+    animalbutton.position = createVector(150, 800);
 
     animalgutstop = new Sprite();
     animalgutstop.width = 700;
@@ -120,7 +137,7 @@ function setup() {
     animalgutsbottom.height = 100;
     animalgutsbottom.collider = 'none';
     animalgutsbottom.visible = false;
-    animalgutsbottom.position = createVector(1000, 800);
+    animalgutsbottom.position = createVector(100, 800);
 
     knife = new Sprite();
     knife.width = 100;
@@ -139,44 +156,44 @@ function setup() {
 
     potato1 = new Sprite();
     potato1.img = potato1IMG;
-    potato1.scale = .5;
+    potato1.scale = .4;
     potato1.width = 100;
     potato1.height = 100;   
     potato1.visible = false;
     potato1.collider = 'd';
     potato1.drag = 15;
-    potato1.position = createVector(500, 100);
+    potato1.position = createVector(250, 700);
     potato1.placed = false;
     potato1.rotation = 0;
 
     potato2 = new Sprite();
     potato2.img = potato2IMG;
-    potato2.scale =.5;
+    potato2.scale =.4;
     potato2.width = 100;
     potato2.height = 100;
     potato2.visible = false;
     potato2.collider = 'd';
     potato2.drag = 15;
-    potato2.position = createVector(0, 100);
+    potato2.position = createVector(500, 300);
     potato2.placed = false;
     potato2.rotation = 0;
     
 
 
     potato3 = new Sprite();
-    potato3.scale = .5;
+    potato3.scale = .4;
     potato3.width = 100;
     potato3.img = potato3IMG;
     potato3.height = 100;
     potato3.visible = false;
     potato3.collider = 'd';
     potato3.drag = 15;
-    potato3.position = createVector(100, 500);
+    potato3.position = createVector(850, 740);
     potato3.placed = false;
     potato3.rotation = 0;
 
     potato4 = new Sprite();
-    potato4.scale = .5;
+    potato4.scale = .4;
     potato4.rotation = 0;
     potato4.img = potato4IMG;
     potato4.width = 100;
@@ -184,7 +201,7 @@ function setup() {
     potato4.visible = false;
     potato4.collider = 'd';
     potato4.drag = 15;
-    potato4.position = createVector(500, 100);
+    potato4.position = createVector(500, 800);
     potato4.placed = false;
 
     potatobutton = new Sprite();
@@ -201,6 +218,42 @@ function setup() {
     peeler.collider = 'd';
     peeler.drag = 15;
     peeler.position = createVector(500, 100);
+
+   
+
+    trash1 = new Sprite();
+    trash1.scale = .4;
+    trash1.rotation = 0;
+    trash1.img = trash1IMG;
+    trash1.width = 100;
+    trash1.height = 100;
+    trash1.visible = false;
+    trash1.collider = 'd';
+    trash1.drag = 15;
+    trash1.position = createVector(400, 500);
+
+    trash2 = new Sprite();
+    trash2.scale = .4;
+    trash2.rotation = 0;
+    trash2.img = trash2IMG;
+    trash2.width = 100;
+    trash2.height = 100;
+    trash2.visible = false;
+    trash2.collider = 'd';
+    trash2.drag = 15;
+    trash2.position = createVector(100, 500);
+
+    trash3 = new Sprite();
+    trash3.scale = .4;
+    trash3.rotation = 0;
+    trash3.img = trash3IMG;
+    trash3.width = 100;
+    trash3.height = 100;
+    trash3.visible = false;
+    trash3.collider = 'd';
+    trash3.drag = 15;
+    trash3.position = createVector(600, 600);
+   
 
 
 
@@ -386,6 +439,12 @@ function draw() {
             animal.collider = 'none';
             gutsbutton.collider = 'none';
             potatobutton.collider = 'none';
+            trash1.visible = true;
+            trash2.visible = true;
+            trash3.visible = true;
+            
+            
+         
 
          
 
@@ -404,11 +463,33 @@ function draw() {
             // Set stage background
             background(constpaper);
 
+            if (frameCount % 50 === 0) {
+                togglebird = !togglebird;
+            }
+            image(togglebird ? bird1 : bird2 , 1000, 100, 500, 500);
+
+            if (frameCount % 50 === 0) {
+                togglegarbage = !togglegarbage;
+            }
+            image(togglegarbage ? garbage1 : garbage2 , 0, 0, windowWidth, windowHeight);
+
             image(bucket0, 0,0, windowWidth, windowHeight);
 
+            if (trash1.mouse.dragging()) {
+                trash1.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+            }
+
+            if (trash2.mouse.dragging()) {
+                trash2.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+            }
+
+            if (trash3.mouse.dragging()) {
+                trash3.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+            }
+
+
             // Draw basket area (replace with basket sprite if needed)
-            fill('blue');
-            rect(600, 600, 1000, 100);
+          
 
             // Array of potatoes
             let potatoes = [potato1, potato2, potato3, potato4];
@@ -424,8 +505,8 @@ function draw() {
                     }
 
                     // Check if the potato is inside the basket
-                    if (potato.position.x >= 600 && potato.position.x <= 1600 &&
-                        potato.position.y >= 600 && potato.position.y <= 700) {
+                    if (potato.position.x >= 1200 && potato.position.x <= 1800 &&
+                        potato.position.y >= 650 && potato.position.y <= 850) {
                         potato.visible = false;     // Hide the potato after placement
                         potato.collider = 'none';  // Disable its collider
                         potato.placed = true;      // Mark it as placed
@@ -478,7 +559,7 @@ function draw() {
 
     }
 
-    console.log(potatocounter);
+    console.log(mouseX, mouseY);
 }
 
 function mouseDragged() {
