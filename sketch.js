@@ -1,4 +1,4 @@
-
+let backgroundmusic;    
 let pastcut = false;
 let potatoState = 1;
 let revealTime = null;
@@ -11,6 +11,9 @@ let enterTime = -1; // Variable to store the time when venisonraw enters the are
 let cookingTime = 10000;
 
 let dish;
+let clicksound;
+let awp;
+let forestsounds;
 
  
 
@@ -86,6 +89,9 @@ let venisonraw, venisonrawIMG, venisoncooked;
 
 
 function preload() {
+    forestsounds = loadSound ("assets/forest.mp3");
+    awp = loadSound("assets/AWP Shooting - CS_GO Sound Effect.mp3");
+    clicksound = loadSound("assets/clicksound.mp3");
     menubackground1 = loadImage("assets/realbackground.png");
     menubackground2 = loadImage("assets/background2.png");
     animalImg = loadImage("assets/placeholderanimal.png");
@@ -161,6 +167,8 @@ function preload() {
     venisoncooked = loadImage("assets/venisoncooked.png")
 
     dish = loadImage("assets/dish.png");
+
+    backgroundmusic = loadSound("assets/backgroundmusic.mp3");
   
 }
 
@@ -422,6 +430,8 @@ function setup() {
 function draw() {
     switch (stage) {
         case 0:
+
+        play(backgroundmusic);
             // // Title screen with alternating background
             // if (frameCount % 100 === 0) {
             //     togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
@@ -942,7 +952,7 @@ rawfries.collider = 'none';
 venisonraw.visible = false;
 venisonraw.collider = 'none';
 
-image(dish, 660, 200, 700, 700);
+image(dish, 600, 200, 700, 700);
 
 
 
@@ -1027,10 +1037,12 @@ function mouseDragged() {
 function mouseReleased() {
     // Check if mouse clicked on the start button in stage 0
     if (stage === 0 && mouseX >= 710 && mouseX <= 1110 && mouseY >= 700 && mouseY <= 900) {
+        play(clicksound);
         stage = 1; // Transition to stage 1
     }
     // Check if mouse clicked within the rectangle area in stage 1
     else if (stage === 1 && mouseX >= 200 && mouseX <= 550 && mouseY >= 150 && mouseY <= 550) {
+        play(clicksound);
         stage = 2; // Transition to stage 2
         animal.visible = true;
     }
@@ -1038,6 +1050,8 @@ function mouseReleased() {
     else if (stage === 2) {
         let threshold1 = 200;
         let distToAnimal = dist(mouseX, mouseY, animal.position.x, animal.position.y);
+
+        play(awp);
 
         if (!animalisdead && distToAnimal < threshold1) {
             animal.visible = false;
@@ -1054,6 +1068,7 @@ function mouseReleased() {
         let threshold2 = 50;
         let distToButton = dist(mouseX, mouseY, animalbutton.position.x, animalbutton.position.y);
         if (distToButton < threshold2) {
+            play(clicksound);
             stage = 3; // Transition to stage 3
         }
     }
@@ -1071,6 +1086,7 @@ function mouseReleased() {
         let threshold4 = 50;
         let distToButton = dist(mouseX, mouseY, potatobutton.position.x, potatobutton.position.y);
         if (distToButton < threshold4) {
+            play(clicksound);
             stage = 4; // Transition to stage 3
         }
     }
@@ -1078,6 +1094,7 @@ function mouseReleased() {
         let threshold4 = 50;
         let distToButton = dist(mouseX, mouseY, peelbutton.position.x, peelbutton.position.y);
         if (distToButton < threshold4) {
+            play(clicksound);
             stage = 5; // Transition to stage 3
         }
        
@@ -1088,6 +1105,7 @@ function mouseReleased() {
         let threshold4 = 50;
         let distToButton = dist(mouseX, mouseY, friesbutton.position.x, friesbutton.position.y);
         if (distToButton < threshold4) {
+            play(clicksound);
             stage = 6; // Transition to stage 3
         }
        
@@ -1098,6 +1116,7 @@ function mouseReleased() {
         let threshold4 = 50;
         let distToButton = dist(mouseX, mouseY, venisonbutton.position.x, venisonbutton.position.y);
         if (distToButton < threshold4) {
+            play(clicksound);
             stage = 7; // Transition to stage 3
         }
        
