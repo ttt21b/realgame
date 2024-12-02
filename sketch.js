@@ -1,6 +1,13 @@
 let backgroundmusic;    
 let beep;
 let gull;
+let swordpickup;
+let firecrackle;
+let bubbles;
+let frying;
+let hooray;
+let gasp;
+let horn;
 
 let cooked1, cooked2;
 let togglecooked = true;
@@ -96,6 +103,13 @@ let tatoball;
 
 
 function preload() {
+    horn = loadSound("assets/Party Horn - Sound Effect (HD).mp3");
+    gasp = loadSound("assets/Crowd GaspShock - Sound Effect (HD).mp3");
+    hooray = loadSound("assets/Hooray! Sound Effect.mp3");
+    frying = loadSound ("assets/Frying Food Sound Effect  Sfx  HD.mp3");
+    bubbles = loadSound("assets/bubbles.mp3");
+    firecrackle = loadSound("assets/Fire Crackling Sound Effect.mp3");
+    swordpickup = loadSound("assets/Sword Unsheathed Sound Effect - High Quality.mp3");
     tatoball = loadSound("assets/tatoball.mp3");
    gull = loadSound("assets/Seagulls Sound Effects  Sound Pack.mp3");
     beep = loadSound("assets/Truck Safety Backup Beeps Beeper Sound Effect.mp3");
@@ -360,13 +374,13 @@ function setup() {
     trash3.position = createVector(600, 600);
 
     katana = new Sprite();
-    katana.scale = 1;
+    katana.scale = 1.5;
  
     katana.visible = false;
-    katana.height = 100;
+    katana.height = 1000;
     katana.width = 100;
     katana.img = katanaimg;
-    katana.position = createVector(100, 800);
+    katana.position = createVector(400, 500);
     katana.drag = 100;
 
     peelbutton = new Sprite();
@@ -535,6 +549,7 @@ function draw() {
             // }
             if (animalisdead) {
                 backgroundmusic.pause();
+                
             }
             // Check if 5 seconds have passed since clickTime
             if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
@@ -838,6 +853,8 @@ function draw() {
     trash2.visible = false;
     trash3.visible = false;
 
+
+
     katana.collider = 'k';
 
     trash1.collider = 'none';
@@ -847,31 +864,41 @@ function draw() {
     bigpotato.visible = true;
     katana.visible = true;
 
+    if (stage === 4) {
+        beep.pause();
+        gull.pause();   
+    }
+
     if (katana.mouse.dragging()) {
-        katana.moveTowards(mouseX, 500, 1); // Smooth dragging
+        katana.moveTowards(mouseX, 500, 1);
+        // Smooth dragging
     }
 
     let cutdist = dist(katana.position.x, katana.position.y, bigpotato.position.x, bigpotato.position.y);
 
     // Transition to Peel2 when katana is close enough
     if (katana.mouse.dragging() && cutdist < 200 && potatoState < 2) {
-        bigpotato.img = peel2; // Change to Peel2
+        bigpotato.img = peel2;
+        swordpickup.play() // Change to Peel2
         potatoState = 2;
     }
 
     // Transition to Peel3 when even closer
     if (katana.mouse.dragging() && cutdist < 50 && potatoState < 3) {
-        bigpotato.img = peel3; // Change to Peel3
+        bigpotato.img = peel3;
+        swordpickup.play() // Change to Peel3
         potatoState = 3;
     }
 
     // Transition to Peel4 when katana moves past a certain X position
     if (katana.position.x > 800 && potatoState < 4) {
-        bigpotato.img = peel4; // Change to Peel4
+        bigpotato.img = peel4;
+        swordpickup.play() // Change to Peel4
         potatoState = 4;
     }
     if (katana.position.x > 900 && potatoState < 5) {
-        bigpotato.img = peel5; // Change to Peel4
+        bigpotato.img = peel5;
+        swordpickup.play() // Change to Peel4
         potatoState = 5;
         revealTime = millis(); // Record the time when Peel4 is reached
     }
@@ -887,12 +914,19 @@ function draw() {
 
 
     case 5:
+    
 
 background(constpaper);
 peelbutton.visible = false;
 katana.visible = false;
 bigpotato.visible = false;
 katana.collider = 'none';
+if (stage === 5) {
+    firecrackle.play();
+    bubbles.play();
+    
+    
+}
 
 // Display the raw fries and set the collider
 rawfries.visible = true;
@@ -921,6 +955,7 @@ if (rawfries.position.x >= 870 && rawfries.position.x <= 1800 &&
     // Hide rawfries after placement and disable its collider
     rawfries.visible = false;
     rawfries.collider = 'none';
+    frying.play();
 
     // Display the toggled oil image
     image(toggleoil ? oil1 : oil2, 1000, 100, 800, 800);
@@ -935,6 +970,7 @@ if (rawfries.position.x >= 870 && rawfries.position.x <= 1800 &&
 if (friesPlacedTime !== null && millis() - friesPlacedTime >= 7000) {
     // Show the cooked fries image after 7 seconds
     image(cookedfries, 50, 500, 600, 600);  // Adjust position and size as needed
+    hooray.play();
 }
 
 if (friesPlacedTime !== null && millis() - friesPlacedTime >= 10000) {
@@ -955,6 +991,13 @@ rawfries.visible = false;
 rawfries.collider = 'none';
 venisonraw.visible = true;
 
+if (stage === 6) {
+    bubbles.pause();
+    frying.pause();
+    firecrackle.play();
+    
+}
+
 if (venisonraw.mouse.dragging()) {
     venisonraw.moveTowards(mouseX, mouseY, 1); // Smooth dragging
 }
@@ -965,6 +1008,7 @@ if (frameCount % 50 === 0) {
 image(toggleshovel ? shovel1 : shovel2, 0, 0, windowWidth, windowHeight);
 
 if (venisonraw.position.x > 600 && venisonraw.position.x < 1200 && venisonraw.position.y > 400 && venisonraw.position.y < 800) {
+    frying.play();
     // If this is the first time entering the area, record the time
     if (enterTime === -1) {
         enterTime = millis(); // Store the current time in milliseconds
@@ -1093,15 +1137,19 @@ function mouseReleased() {
         play(awp);
 
         if (!animalisdead && distToAnimal < threshold1) {
+            
+
             animal.visible = false;
             animal.vel.x = 0;
             animal.vel.y = 0; // Stop the animal from moving
             animaldead.visible = true;
+            gasp.play();
             animalisdead = true; // Flag the animal as dead
             animaldead.position = animal.position.copy();
             animaldead.velocity = animal.velocity.copy();
             clickTime = millis(); // Record the time of the click
             console.log("Animal clicked at: " + clickTime + " milliseconds");
+            
         }
 
         let threshold2 = 50;
@@ -1156,6 +1204,10 @@ function mouseReleased() {
         let distToButton = dist(mouseX, mouseY, venisonbutton.position.x, venisonbutton.position.y);
         if (distToButton < threshold4) {
             play(clicksound);
+            frying.pause();
+            firecrackle.pause();
+            play(horn);
+            
             stage = 7; // Transition to stage 3
         }
        
