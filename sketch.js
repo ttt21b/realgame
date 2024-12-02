@@ -1,5 +1,7 @@
 
-
+let pastcut = false;
+let potatoState = 1;
+let revealTime = null;
 
 let stage = 0;
 let togglemenubackground = true; // Variable to toggle background image
@@ -48,6 +50,13 @@ let togglebird = true;
 let trash1IMG, trash2IMG, trash3IMG;
 
 
+let potatosign1, potatosign2;
+let togglepotatosign = true;
+
+let peel1, peel2, peel3, peel4;
+let katana;
+let peelbutton;
+
 
 
 
@@ -94,6 +103,17 @@ function preload() {
     trash1IMG = loadImage("assets/bottle.png"); 
     trash2IMG = loadImage("assets/can.png");
     trash3IMG = loadImage("assets/apple.png");
+
+    potatosign1 = loadImage("assets/potatosign1.png")
+    
+    potatosign2 = loadImage("assets/potatosign2.png")
+
+    peel1 = loadImage("assets/peel1.png")
+    peel2 = loadImage("assets/peel2.png")
+    peel3 = loadImage("assets/peel3.png")
+    peel4 = loadImage("assets/peel4.png")
+
+    katanaimg = loadImage("assets/katana.png")
 }
 
 function setup() {
@@ -204,12 +224,28 @@ function setup() {
     potato4.position = createVector(500, 800);
     potato4.placed = false;
 
-    potatobutton = new Sprite();
-    potatobutton.width = 100;
-    potatobutton.height = 100;
-    potatobutton.collider = 'static';
-    potatobutton.visible = false;
-    potatobutton.position = createVector(100, 100);
+    bigpotato = new Sprite();
+    bigpotato.img = peel1;
+   bigpotato.position = createVector(windowWidth/2, windowHeight/2);
+   bigpotato.visible = false; // Initially hidden
+   bigpotato.collider = 'k';
+   bigpotato.scale = 1.5;
+
+    // potatobutton = new Sprite();
+    // potatobutton.width = 100;
+    // potatobutton.height = 100;
+    // potatobutton.collider = 'static';
+    // potatobutton.visible = false;
+    // potatobutton.position = createVector(100, 100);
+
+   potatobutton = new Sprite();
+   potatobutton.scale = .5;
+   potatobutton.img = nextbutton;
+   potatobutton.width = 100;
+   potatobutton.height = 100;
+   potatobutton.collider = 'static';
+   potatobutton.visible = false;
+   potatobutton.position = createVector(150, 800);
 
     peeler = new Sprite();
     peeler.width = 100;
@@ -253,6 +289,26 @@ function setup() {
     trash3.collider = 'd';
     trash3.drag = 15;
     trash3.position = createVector(600, 600);
+
+    katana = new Sprite();
+    katana.scale = 1;
+ 
+    katana.visible = false;
+    katana.height = 100;
+    katana.width = 100;
+    katana.img = katanaimg;
+    katana.position = createVector(100, 800);
+    katana.drag = 100;
+
+    peelbutton = new Sprite();
+    peelbutton.scale = .5;
+    peelbutton.img = nextbutton;
+    peelbutton.width = 100;
+    peelbutton.height = 100;
+    peelbutton.collider = 'static';
+    peelbutton.visible = false;
+    peelbutton.position = createVector(150, 800);
+
    
 
 
@@ -439,6 +495,9 @@ function draw() {
             animal.collider = 'none';
             gutsbutton.collider = 'none';
             potatobutton.collider = 'none';
+            bigpotato.collider = 'none';
+
+            katana.collider = 'none';
             trash1.visible = true;
             trash2.visible = true;
             trash3.visible = true;
@@ -472,6 +531,11 @@ function draw() {
                 togglegarbage = !togglegarbage;
             }
             image(togglegarbage ? garbage1 : garbage2 , 0, 0, windowWidth, windowHeight);
+
+            if (frameCount % 30 === 0) {
+                togglepotatosign = !togglepotatosign;
+            }
+            image(togglepotatosign ? potatosign1 : potatosign2 , 0, 0, windowWidth, windowHeight);
 
             image(bucket0, 0,0, windowWidth, windowHeight);
 
@@ -550,16 +614,131 @@ function draw() {
         // }
 
 
-        case 4:
-            background(constpaper);
-            potatobutton.visible = false;
+    //     case 4:
+    //         background(constpaper);
+    //         potatobutton.visible = false;   
+    //         trash1.visible = false;
+    //         trash2.visible = false;
+    //         trash3.visible = false;
+
+    //         katana.collider = 'k';
+
+    //         trash1.collider = 'none';
+    //         trash2.collider = 'none';
+    //         trash3.collider = 'none';
+
+
+
+    //         bigpotato.visible = true;
+    //         katana.visible = true;
+
+    //         if (katana.mouse.dragging()) {
+    //             katana.moveTowards(mouseX, 500, 1); // Smooth dragging
+    //         }
+
+    //         let cutdist = dist(katana.position.x, katana.position.y, bigpotato.position.x, bigpotato.position.y);
+
+    //         let pastcut = false;
+
+    //         if (katana.mouse.dragging() && cutdist < 200) {
+    //             bigpotato.img = peel2;
+           
+
+    //         }
+
+    //         if (katana.mouse.dragging() && cutdist < 50 )  {
+    //             bigpotato.img = peel3;
+    //             pastcut = true;
+    //         }
+    //         if (pastcut == true) {
+    //             bigpotato.img = peel3;
+    //         }
+      
+
+    //         // if (katana.mouse.dragging() && katana.position.x > 800) {
+    //         //     bigpotato.img = peel4;
+
+                
+    //         // }
+
+          
+            
+        
 
             
-            break;
+    //         break;
 
+    // }
+
+ // Define `pastcut` outside the case block so it persists across frames
+
+
+// Define `pastcut` outside the case block so it persists across frames
+
+
+// Define states outside the case block
+ // 1: Normal, 2: Peel2, 3: Peel3, 4: Peel4
+
+ case 4:
+    background(constpaper);
+    potatobutton.visible = false;   
+    trash1.visible = false;
+    trash2.visible = false;
+    trash3.visible = false;
+
+    katana.collider = 'k';
+
+    trash1.collider = 'none';
+    trash2.collider = 'none';
+    trash3.collider = 'none';
+
+    bigpotato.visible = true;
+    katana.visible = true;
+
+    if (katana.mouse.dragging()) {
+        katana.moveTowards(mouseX, 500, 1); // Smooth dragging
     }
 
-    console.log(mouseX, mouseY);
+    let cutdist = dist(katana.position.x, katana.position.y, bigpotato.position.x, bigpotato.position.y);
+
+    // Transition to Peel2 when katana is close enough
+    if (katana.mouse.dragging() && cutdist < 200 && potatoState < 2) {
+        bigpotato.img = peel2; // Change to Peel2
+        potatoState = 2;
+    }
+
+    // Transition to Peel3 when even closer
+    if (katana.mouse.dragging() && cutdist < 50 && potatoState < 3) {
+        bigpotato.img = peel3; // Change to Peel3
+        potatoState = 3;
+    }
+
+    // Transition to Peel4 when katana moves past a certain X position
+    if (katana.position.x > 800 && potatoState < 4) {
+        bigpotato.img = peel4; // Change to Peel4
+        potatoState = 4;
+        revealTime = millis(); // Record the time when Peel4 is reached
+    }
+
+    // Show the button 3 seconds after reaching potatoState = 4
+    if (potatoState === 4 && revealTime !== null && millis() >= revealTime + 3000) {
+        peelbutton.visible = true; // Show the button
+    }
+
+    break;
+
+    case 5:
+        background(constpaper);
+        bigpotato.visible = false;
+        katana.visible = false;
+       peelbutton.visible = false;
+    break;
+
+   
+
+    
+}
+console.log(stage);
 }
 
 function mouseDragged() {
@@ -576,6 +755,8 @@ function mouseDragged() {
 
 
         knife.moveTowards(mouseX, 500, .1);
+
+        
 
 
     }
@@ -630,6 +811,15 @@ function mouseReleased() {
         if (distToButton < threshold4) {
             stage = 4; // Transition to stage 3
         }
+    }
+    else if ( stage === 4) {
+        let threshold4 = 50;
+        let distToButton = dist(mouseX, mouseY, peelbutton.position.x, peelbutton.position.y);
+        if (distToButton < threshold4) {
+            stage = 5; // Transition to stage 3
+        }
+       
+
     }
 
 
