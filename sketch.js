@@ -1,4 +1,9 @@
 let backgroundmusic;    
+let beep;
+let gull;
+
+let cooked1, cooked2;
+let togglecooked = true;
 let pastcut = false;
 let potatoState = 1;
 let revealTime = null;
@@ -85,10 +90,17 @@ let friesbutton;
 
 let venisonraw, venisonrawIMG, venisoncooked;
 
+let tatoball;
+
 
 
 
 function preload() {
+    tatoball = loadSound("assets/tatoball.mp3");
+   gull = loadSound("assets/Seagulls Sound Effects  Sound Pack.mp3");
+    beep = loadSound("assets/Truck Safety Backup Beeps Beeper Sound Effect.mp3");
+    cooked1 = loadImage("assets/cooked1.png");
+    cooked2 = loadImage("assets/cooked2.png");
     forestsounds = loadSound ("assets/forest.mp3");
     awp = loadSound("assets/AWP Shooting - CS_GO Sound Effect.mp3");
     clicksound = loadSound("assets/clicksound.mp3");
@@ -432,6 +444,7 @@ function draw() {
         case 0:
 
         play(backgroundmusic);
+        
             // // Title screen with alternating background
             // if (frameCount % 100 === 0) {
             //     togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
@@ -439,13 +452,18 @@ function draw() {
             // background(togglemenubackground ? menubackground1 : menubackground2);
 
             background(constpaper);
-            image(constpaper);
+          
+
+            if (frameCount % 30 === 0) {
+                togglecooked = !togglecooked;
+            }
+            image(togglecooked ? cooked2 : cooked1, 400, 100, 1100, 340);
             // Draw the start button
 
             if (frameCount % 30 === 0) {
                 togglegobutton = !togglegobutton;
             }
-            image(togglegobutton ? go1 : go2, 710, 500);
+            image(togglegobutton ? go1 : go2, 600, 400, 600, 600);
             // fill("black");
             // rect(710, 700, 400, 200, 20); // Start button area
             animal.visible = false;
@@ -460,11 +478,19 @@ function draw() {
             rect(200, 150, 350, 400); // Optional visual area
             animal.visible = false; // Hide the animal in stage 1
             animaldead.visible = false;
+
+            if (stage === 1) {
+                stage = 2;
+                animal.visible = true;
+            }
             break;
 
         case 2:
             // End screen
             background(constpaper);
+            if (stage === 2) {
+                play(forestsounds);
+            }
             image(trees, 0, 0, windowWidth, windowHeight);
 
             if (frameCount % 30 === 0) {
@@ -507,7 +533,9 @@ function draw() {
             // if (animal.position.y > windowHeight || animal.position.y < 0) {
             //     animal.vel.y *= -1; // Reverse vertical velocity
             // }
-
+            if (animalisdead) {
+                backgroundmusic.pause();
+            }
             // Check if 5 seconds have passed since clickTime
             if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
                 animalbutton.visible = true; // Show the button after 5 seconds
@@ -614,6 +642,12 @@ function draw() {
             trash1.visible = true;
             trash2.visible = true;
             trash3.visible = true;
+          if (stage === 3) {
+            backgroundmusic.play();
+            forestsounds.pause();
+            beep.play();
+            gull.play();
+          }
             
             
          
@@ -684,6 +718,7 @@ function draw() {
                     // Check if the potato is inside the basket
                     if (potato.position.x >= 1200 && potato.position.x <= 1800 &&
                         potato.position.y >= 650 && potato.position.y <= 850) {
+                            tatoball.play();
                         potato.visible = false;     // Hide the potato after placement
                         potato.collider = 'none';  // Disable its collider
                         potato.placed = true;      // Mark it as placed
@@ -694,18 +729,22 @@ function draw() {
             });
 
             if (potatocounter == 1) {
+               
                 //show an image
                 image(bucket1, 0, 0, windowWidth, windowHeight);
             }
             if (potatocounter == 2) {
+               
                 //show an image
                 image(bucket2, 0, 0, windowWidth, windowHeight);
             }
             if (potatocounter == 3) {
+               
                 image(bucket3, 0, 0, windowWidth, windowHeight);
             }
             if (potatocounter == 4) {
                 //show an image
+               
                 image(bucket4, 0, 0, windowWidth, windowHeight);
             }
 
@@ -1036,7 +1075,7 @@ function mouseDragged() {
 // Handle stage transitions on mouse release
 function mouseReleased() {
     // Check if mouse clicked on the start button in stage 0
-    if (stage === 0 && mouseX >= 710 && mouseX <= 1110 && mouseY >= 700 && mouseY <= 900) {
+    if (stage === 0 && mouseX >= 700 && mouseX <= 1110 && mouseY >= 600 && mouseY <= 900) {
         play(clicksound);
         stage = 1; // Transition to stage 1
     }
