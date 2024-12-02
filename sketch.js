@@ -4,6 +4,12 @@ let potatoState = 1;
 let revealTime = null;
 let friesPlacedTime = null;
 
+let shovel1, shovel2;
+let toggleshovel = true;
+
+let enterTime = -1; // Variable to store the time when venisonraw enters the area
+let cookingTime = 10000;
+
  
 
 let stage = 0;
@@ -144,6 +150,12 @@ function preload() {
     cookedfries = loadImage("assets/cookedfries.png");
 
     venisonrawIMG = loadImage("assets/venisonraw.png");
+
+    shovel1 = loadImage("assets/shovel1.png");
+    
+    shovel2 = loadImage("assets/shovel2.png");
+
+    venisoncooked = loadImage("assets/venisoncooked.png")
   
 }
 
@@ -363,15 +375,14 @@ function setup() {
    friesbutton.position = createVector(150, 800);
 
    venisonraw = new Sprite();
-   venisonraw.rotation = 0;
+   venisonraw.rotationSpeed = 0;
    venisonraw.img = venisonrawIMG;
    venisonraw.width = 100;
    venisonraw.height = 100;
    venisonraw.visible = false;
    venisonraw.collider = 'd';
    venisonraw.drag = 15;
-   venisonraw.position = createVector(500, 800);
-   venisonraw.placed = false;
+   venisonraw.position = createVector(100, 100);
 
 //    venisoncooked = new Sprite();
 //    venisoncooked.rotation = 0;
@@ -818,6 +829,7 @@ background(constpaper);
 peelbutton.visible = false;
 katana.visible = false;
 bigpotato.visible = false;
+katana.collider = 'none';
 
 // Display the raw fries and set the collider
 rawfries.visible = true;
@@ -875,12 +887,33 @@ if (friesPlacedTime !== null && millis() - friesPlacedTime >= 10000) {
 case 6:
 background(constpaper);
 friesbutton.visible = false;
+friesbutton.collider = 'none';
 rawfries.visible = false;
 rawfries.collider = 'none';
 venisonraw.visible = true;
 
 if (venisonraw.mouse.dragging()) {
     venisonraw.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+}
+
+if (frameCount % 50 === 0) {
+    toggleshovel = !toggleshovel;
+}
+image(toggleshovel ? shovel1 : shovel2, 0, 0, windowWidth, windowHeight);
+
+if (venisonraw.position.x > 600 && venisonraw.position.x < 1200 && venisonraw.position.y > 400 && venisonraw.position.y < 800) {
+    // If this is the first time entering the area, record the time
+    if (enterTime === -1) {
+        enterTime = millis(); // Store the current time in milliseconds
+    }
+
+    // Check if 10 seconds have passed
+    if (millis() - enterTime >= cookingTime) {
+        venisonraw.img = venisoncooked; // Change the image to cooked venison
+    }
+} else {
+    // Reset the timer if venisonraw leaves the area
+    enterTime = -1;
 }
 
 
