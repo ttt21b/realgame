@@ -37,6 +37,7 @@ let peeler;
 let potatotime = null;
 
 let potatobutton;
+let venisonbutton;
 
 
 let potatocounter = 0;
@@ -383,6 +384,15 @@ function setup() {
    venisonraw.collider = 'd';
    venisonraw.drag = 15;
    venisonraw.position = createVector(100, 100);
+
+   venisonbutton = new Sprite();
+   venisonbutton.scale = .5;
+   venisonbutton.img = nextbutton;
+   venisonbutton.width = 100;
+   venisonbutton.height = 100;
+   venisonbutton.collider = 'static';
+   venisonbutton.visible = false;
+   venisonbutton.position = createVector(150, 800);
 
 //    venisoncooked = new Sprite();
 //    venisoncooked.rotation = 0;
@@ -910,11 +920,25 @@ if (venisonraw.position.x > 600 && venisonraw.position.x < 1200 && venisonraw.po
     // Check if 10 seconds have passed
     if (millis() - enterTime >= cookingTime) {
         venisonraw.img = venisoncooked; // Change the image to cooked venison
+    venisonbutton.visible = true;
     }
 } else {
     // Reset the timer if venisonraw leaves the area
     enterTime = -1;
 }
+
+break;
+
+case 7:
+background(constpaper);
+venisonbutton.visible = false;
+venisonbutton.collider = 'none';
+rawfries.visible = false;
+rawfries.collider = 'none';
+venisonraw.visible = false;
+venisonraw.collider = 'none';
+
+
 
 
 }
@@ -1059,6 +1083,16 @@ function mouseReleased() {
         let distToButton = dist(mouseX, mouseY, friesbutton.position.x, friesbutton.position.y);
         if (distToButton < threshold4) {
             stage = 6; // Transition to stage 3
+        }
+       
+
+    }
+
+    else if ( stage === 6) {
+        let threshold4 = 50;
+        let distToButton = dist(mouseX, mouseY, venisonbutton.position.x, venisonbutton.position.y);
+        if (distToButton < threshold4) {
+            stage = 7; // Transition to stage 3
         }
        
 
