@@ -4,6 +4,8 @@ let potatoState = 1;
 let revealTime = null;
 let friesPlacedTime = null;
 
+ 
+
 let stage = 0;
 let togglemenubackground = true; // Variable to toggle background image
 let menubackground1, menubackground2;
@@ -67,6 +69,9 @@ let oil1, oil2, oil3;
 let toggleoil = true;
 
 let cookedfries;
+let friesbutton;
+
+let venisonraw, venisonrawIMG, venisoncooked;
 
 
 
@@ -136,7 +141,9 @@ function preload() {
     oil1 = loadImage("assets/oil1.png");
     oil2 = loadImage("assets/oil2.png");
     oil3 = loadImage("assets/oil3.png");
-    cookedfries = loadImage("assets/cookedfries.png")
+    cookedfries = loadImage("assets/cookedfries.png");
+
+    venisonrawIMG = loadImage("assets/venisonraw.png");
   
 }
 
@@ -345,6 +352,39 @@ function setup() {
     rawfries.position = createVector(200, 770);
     rawfries.rotationSpeed = 0;
     rawfries.scale = 2;
+
+   friesbutton = new Sprite();
+   friesbutton.scale = .5;
+   friesbutton.img = nextbutton;
+   friesbutton.width = 100;
+   friesbutton.height = 100;
+   friesbutton.collider = 'static';
+   friesbutton.visible = false;
+   friesbutton.position = createVector(150, 800);
+
+   venisonraw = new Sprite();
+   venisonraw.rotation = 0;
+   venisonraw.img = venisonrawIMG;
+   venisonraw.width = 100;
+   venisonraw.height = 100;
+   venisonraw.visible = false;
+   venisonraw.collider = 'd';
+   venisonraw.drag = 15;
+   venisonraw.position = createVector(500, 800);
+   venisonraw.placed = false;
+
+//    venisoncooked = new Sprite();
+//    venisoncooked.rotation = 0;
+//    venisoncooked.img = venisoncookedIMG;
+//    venisoncooked.width = 100;
+//    venisoncooked.height = 100;
+//    venisoncooked.visible = false;
+//    venisoncooked.collider = 'd';
+//    venisoncooked.drag = 15;
+//    venisoncooked.position = createVector(500, 800);
+//    venisoncooked.placed = false;
+
+ 
 
    
 
@@ -771,7 +811,8 @@ function draw() {
 
     break;
 
-case 5:
+
+    case 5:
 
 background(constpaper);
 peelbutton.visible = false;
@@ -818,8 +859,31 @@ if (rawfries.position.x >= 870 && rawfries.position.x <= 1800 &&
 // Check if 7 seconds have passed since fries were placed
 if (friesPlacedTime !== null && millis() - friesPlacedTime >= 7000) {
     // Show the cooked fries image after 7 seconds
-    image(cookedFries, 1000, 500, 500, 500);  // Adjust position and size as needed
+    image(cookedfries, 50, 500, 600, 600);  // Adjust position and size as needed
 }
+
+if (friesPlacedTime !== null && millis() - friesPlacedTime >= 10000) {
+    // Show the cooked fries image after 7 seconds
+    friesbutton.visible = true;  // Adjust position and size as needed
+}
+
+    
+    
+    
+    break;
+
+case 6:
+background(constpaper);
+friesbutton.visible = false;
+rawfries.visible = false;
+rawfries.collider = 'none';
+venisonraw.visible = true;
+
+if (venisonraw.mouse.dragging()) {
+    venisonraw.moveTowards(mouseX, mouseY, 1); // Smooth dragging
+}
+
+
 }
 //     background(constpaper);
 //     peelbutton.visible = false;
@@ -952,6 +1016,16 @@ function mouseReleased() {
         let distToButton = dist(mouseX, mouseY, peelbutton.position.x, peelbutton.position.y);
         if (distToButton < threshold4) {
             stage = 5; // Transition to stage 3
+        }
+       
+
+    }
+
+    else if ( stage === 5) {
+        let threshold4 = 50;
+        let distToButton = dist(mouseX, mouseY, friesbutton.position.x, friesbutton.position.y);
+        if (distToButton < threshold4) {
+            stage = 6; // Transition to stage 3
         }
        
 
