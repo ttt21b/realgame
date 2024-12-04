@@ -8,6 +8,15 @@ let frying;
 let hooray;
 let gasp;
 let horn;
+let cuttingboard;
+let chop;
+let slicendice1, slicendice2;
+let letscook1, letscook2;
+let toggleletscook = true;
+
+let end1, end2;
+let toggleend = true;
+
 
 let cooked1, cooked2;
 let togglecooked = true;
@@ -98,11 +107,23 @@ let friesbutton;
 let venisonraw, venisonrawIMG, venisoncooked;
 
 let tatoball;
+let toggleslicendice = true;
+
+let fryem1, fryem2;
+let togglefryem = true;
 
 
 
 
 function preload() {
+    end1 = loadImage("assets/end1.png");
+    end2 = loadImage("assets/end2.png");
+    letscook1 = loadImage("assets/letscook1.png");
+    letscook2 = loadImage("assets/letscook2.png");
+    fryem1 = loadImage("assets/fryem1.png");
+    fryem2 = loadImage("assets/fryem2.png");
+    chop = loadSound("assets/chop.mp3");
+    cuttingboard = loadImage("assets/cuttingboard.png");
     horn = loadSound("assets/Party Horn - Sound Effect (HD).mp3");
     gasp = loadSound("assets/Crowd GaspShock - Sound Effect (HD).mp3");
     hooray = loadSound("assets/Hooray! Sound Effect.mp3");
@@ -195,6 +216,8 @@ function preload() {
     dish = loadImage("assets/dish.png");
 
     backgroundmusic = loadSound("assets/backgroundmusic.mp3");
+    slicendice1 = loadImage("assets/slicendice1.png");
+    slicendice2 = loadImage("assets/slicendice2.png");
   
 }
 
@@ -459,6 +482,7 @@ function draw() {
 
         play(backgroundmusic);
         
+        
             // // Title screen with alternating background
             // if (frameCount % 100 === 0) {
             //     togglemenubackground = !togglemenubackground; // Toggle the background every 100 frames
@@ -547,10 +571,21 @@ function draw() {
             // if (animal.position.y > windowHeight || animal.position.y < 0) {
             //     animal.vel.y *= -1; // Reverse vertical velocity
             // }
+            // if (animalisdead) {
+            //     backgroundmusic.pause();
+              
+               
+                
+            // }
+
             if (animalisdead) {
-                backgroundmusic.pause();
+                backgroundmusic.pause(); // Stops the background music
+            // Check if gasp is not already playing
+                    gasp.play(); // Play the gasp sound once
                 
             }
+         
+         
             // Check if 5 seconds have passed since clickTime
             if (animalisdead && clickTime !== null && millis() >= clickTime + 5000) {
                 animalbutton.visible = true; // Show the button after 5 seconds
@@ -644,6 +679,7 @@ function draw() {
         case 3:
             // Reset visibility and collisions for unrelated sprites
             animalbutton.visible = false;
+            animalisdead = false;
             animaldead.visible = false;
             animalbutton.collider = 'none';
             animaldead.collider = 'none';
@@ -864,6 +900,14 @@ function draw() {
     bigpotato.visible = true;
     katana.visible = true;
 
+
+    image(cuttingboard, 0,0,windowWidth, windowHeight);
+    
+ if (frameCount % 50 === 0) {
+    toggleslicendice = !toggleslicendice;
+            }
+    image(toggleslicendice ? slicendice1 : slicendice2 , 300, 0, 1300, 300);
+
     if (stage === 4) {
         beep.pause();
         gull.pause();   
@@ -871,6 +915,7 @@ function draw() {
 
     if (katana.mouse.dragging()) {
         katana.moveTowards(mouseX, 500, 1);
+        chop.play();
         // Smooth dragging
     }
 
@@ -917,6 +962,7 @@ function draw() {
     
 
 background(constpaper);
+
 peelbutton.visible = false;
 katana.visible = false;
 bigpotato.visible = false;
@@ -927,6 +973,8 @@ if (stage === 5) {
     
     
 }
+
+
 
 // Display the raw fries and set the collider
 rawfries.visible = true;
@@ -943,6 +991,13 @@ if (frameCount % 50 === 0) {
     toggleoil = !toggleoil;
 }
 
+if (frameCount % 50 === 0) {
+    togglefryem = !togglefryem;
+            }
+    image(togglefryem ? fryem1 : fryem2 , 300, 0, 1300, 300); 
+
+
+
 // Make rawfries draggable
 if (rawfries.mouse.dragging()) {
     rawfries.moveTowards(mouseX, mouseY, 1); // Smooth dragging
@@ -955,6 +1010,7 @@ if (rawfries.position.x >= 870 && rawfries.position.x <= 1800 &&
     // Hide rawfries after placement and disable its collider
     rawfries.visible = false;
     rawfries.collider = 'none';
+    // rawfries.velocity = 0;/
     frying.play();
 
     // Display the toggled oil image
@@ -1007,6 +1063,11 @@ if (frameCount % 50 === 0) {
 }
 image(toggleshovel ? shovel1 : shovel2, 0, 0, windowWidth, windowHeight);
 
+if (frameCount % 50 === 0) {
+    toggleletscook = !toggleletscook;
+            }
+    image(toggleletscook ? letscook1 : letscook2 , 300, 0, 1300, 300); 
+
 if (venisonraw.position.x > 600 && venisonraw.position.x < 1200 && venisonraw.position.y > 400 && venisonraw.position.y < 800) {
     frying.play();
     // If this is the first time entering the area, record the time
@@ -1034,6 +1095,11 @@ rawfries.visible = false;
 rawfries.collider = 'none';
 venisonraw.visible = false;
 venisonraw.collider = 'none';
+
+if (frameCount % 50 === 0) {
+    toggleend = !toggleend;
+            }
+    image(toggleend ? end1 : end2 , 300, 0, 1300, 300); 
 
 image(dish, 600, 200, 700, 700);
 
@@ -1143,10 +1209,11 @@ function mouseReleased() {
             animal.vel.x = 0;
             animal.vel.y = 0; // Stop the animal from moving
             animaldead.visible = true;
-            gasp.play();
+            
             animalisdead = true; // Flag the animal as dead
             animaldead.position = animal.position.copy();
             animaldead.velocity = animal.velocity.copy();
+            
             clickTime = millis(); // Record the time of the click
             console.log("Animal clicked at: " + clickTime + " milliseconds");
             
